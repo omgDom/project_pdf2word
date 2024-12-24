@@ -1,0 +1,43 @@
+/* Form styles */
+.upload-area,
+.file-input,
+.language-selector,
+.format-selector {
+    /* ... form styles ... */
+} 
+
+/* Add to existing forms.css */
+@media screen and (max-width: 768px) {
+    .upload-area {
+        min-height: 120px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+    }
+
+    .upload-area.dragover {
+        transform: scale(1.02);
+    }
+
+    .progress-container {
+        margin: 1rem 0;
+    }
+
+    select, 
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+        height: 44px;
+        padding: 0.5rem;
+        font-size: 16px; /* Prevent iOS zoom */
+    }
+
+    .swipe-area {
+        touch-action: pan-y pinch-zoom;
+    }
+} 
+
+/* Upload Area Theme */
+.upload-area {
+    background-color: var(--bg-secondary);
+    border: 2px dashed var(--border-color);
+} 

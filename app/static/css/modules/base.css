@@ -1,0 +1,51 @@
+/* Base styles */
+:root {
+    /* Color variables */
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --accent-color: #ffd700;
+    
+    /* Text colors */
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    
+    /* Background colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    
+    /* Other variables */
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+    --safe-area-inset-top: env(safe-area-inset-top);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom);
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+}
+
+/* Loading States */
+.skeleton-loading {
+    background: linear-gradient(90deg, 
+        var(--skeleton-bg) 25%, 
+        var(--skeleton-highlight) 50%, 
+        var(--skeleton-bg) 75%
+    );
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+} 

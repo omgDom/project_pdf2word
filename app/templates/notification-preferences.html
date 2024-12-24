@@ -1,0 +1,45 @@
+<div class="notification-preferences">
+    <h3>Notification Preferences</h3>
+    
+    <div class="preference-section">
+        <h4>Email Notifications</h4>
+        <label>
+            <input type="checkbox" id="emailEnabled">
+            Enable email notifications
+        </label>
+        <input type="email" id="emailAddress" placeholder="Email address">
+        
+        <div class="priority-settings">
+            <label>
+                <input type="checkbox" id="emailLowPriority">
+                Low priority alerts
+            </label>
+            <label>
+                <input type="checkbox" id="emailMediumPriority">
+                Medium priority alerts
+            </label>
+            <label>
+                <input type="checkbox" id="emailHighPriority">
+                High priority alerts
+            </label>
+        </div>
+    </div>
+    
+    <div class="preference-section">
+        <h4>SMS Notifications</h4>
+        <label>
+            <input type="checkbox" id="smsEnabled">
+            Enable SMS notifications
+        </label>
+        <input type="tel" id="phoneNumber" placeholder="Phone number">
+        
+        <div class="priority-settings">
+            <label>
+                <input type="checkbox" id="smsHighPriority">
+                High priority alerts only
+            </label>
+        </div>
+    </div>
+    
+    <button id="savePreferences" class="save-btn">Save Preferences</button>
+</div> 

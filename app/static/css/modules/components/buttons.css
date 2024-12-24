@@ -1,0 +1,71 @@
+/* Button styles */
+.convert-btn,
+.browse-btn,
+.source-btn,
+.upload-btn,
+.theme-toggle-btn {
+    /* ... button styles ... */
+} 
+
+/* Add to existing buttons.css */
+@media screen and (max-width: 768px) {
+    .convert-btn, 
+    .source-btn {
+        width: 100%;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        min-height: 44px; /* Touch target size */
+    }
+} 
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.dark-mode-input {
+    display: none;
+}
+
+.dark-mode-label {
+    cursor: pointer;
+    padding: 10px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.dark-mode-label:hover {
+    background: var(--hover-color);
+}
+
+.dark-mode-label .fa-sun {
+    display: block;
+    color: var(--text-primary);
+}
+
+.dark-mode-label .fa-moon {
+    display: none;
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .dark-mode-label .fa-sun {
+    display: none;
+}
+
+[data-theme="dark"] .dark-mode-label .fa-moon {
+    display: block;
+}
+
+/* Convert Button Theme */
+.convert-btn {
+    background-color: var(--accent-color);
+    color: white;
+} 

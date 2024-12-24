@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Your translator content -->
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/translator.js') }}"></script>
+{% endblock %} 

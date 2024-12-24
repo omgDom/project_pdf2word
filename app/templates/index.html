@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <a href="{{ url_for('main.index') }}" class="nav-link active">Simple Doc</a>
+        <a href="{{ url_for('main.translate_page') }}" class="nav-link">
+            Document Translator
+            <span class="premium-badge">Premium</span>
+        </a>
+    </nav>
+
+    <!-- Converter Section -->
+    <div class="converter-container">
+        <div class="upload-area" id="uploadArea">
+            <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+            <div class="upload-message">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Drag & drop your PDF here or</p>
+                <button id="browseButton" class="browse-btn">Browse Files</button>
+            </div>
+        </div>
+
+        <!-- Format Selector moved below upload area -->
+        <div class="format-selector">
+            <label for="formatSelect">Select Output Format:</label>
+            <select id="formatSelect" class="format-select">
+                <option value="docx">Word Document (.docx)</option>
+                <option value="txt">Text File (.txt)</option>
+                <option value="rtf">Rich Text Format (.rtf)</option>
+                <option value="xlsx">Excel Spreadsheet (.xlsx)</option>
+                <option value="pptx">PowerPoint Presentation (.pptx)</option>
+                <option value="epub">E-Book (.epub)</option>
+                <option value="html">Web Page (.html)</option>
+                <option value="md">Markdown (.md)</option>
+                <option value="odt">OpenDocument Text (.odt)</option>
+                <option value="pages">Apple Pages (.pages)</option>
+                <option value="jpeg">JPEG Image (.jpeg)</option>
+                <option value="pdf">PDF Document (.pdf)</option>
+            </select>
+        </div>
+
+        <div id="filePreview" class="file-preview" style="display: none;">
+            <p id="fileName"></p>
+            <button id="convertButton" class="convert-btn" disabled>Convert to Word</button>
+        </div>
+
+        <div id="progressContainer" class="progress-container" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <span class="progress-percentage">0%</span>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+        <div class="feature-card">
+            <i class="fas fa-bolt"></i>
+            <h3>Fast Conversion</h3>
+            <p>Convert your PDFs in seconds</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-lock"></i>
+            <h3>Secure</h3>
+            <p>Your files are encrypted and secure</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-cloud"></i>
+            <h3>Cloud Storage</h3>
+            <p>Access your files anywhere</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

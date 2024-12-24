@@ -1,0 +1,11 @@
+:root {
+    --primary-color: #4F46E5;
+    --error-color: #EF4444;
+    /* ... other theme variables ... */
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    /* ... other dark theme variables ... */
+} 

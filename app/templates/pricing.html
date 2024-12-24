@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <nav class="nav-menu">
+        <a href="{{ url_for('main.index') }}" class="nav-link">PDF Converter</a>
+        <a href="{{ url_for('main.translate_page') }}" class="nav-link">Document Translator</a>
+    </nav>
+
+    <div class="pricing-cards">
+        <div class="pricing-card">
+            <div class="pricing-header">
+                <h2>Free</h2>
+                <p class="price">$0</p>
+            </div>
+            <ul class="features">
+                <li><i class="fas fa-check"></i> PDF to Word Conversion</li>
+                <li><i class="fas fa-check"></i> Basic File Support</li>
+                <li><i class="fas fa-times"></i> Document Translation</li>
+                <li><i class="fas fa-times"></i> Priority Support</li>
+            </ul>
+            <button class="current-plan">Current Plan</button>
+        </div>
+
+        <div class="pricing-card premium">
+            <div class="pricing-header">
+                <h2>Premium</h2>
+                <p class="price">$9.99<span>/month</span></p>
+            </div>
+            <ul class="features">
+                <li><i class="fas fa-check"></i> PDF to Word Conversion</li>
+                <li><i class="fas fa-check"></i> Advanced File Support</li>
+                <li><i class="fas fa-check"></i> Document Translation</li>
+                <li><i class="fas fa-check"></i> Priority Support</li>
+            </ul>
+            <button class="upgrade-btn" onclick="startSubscription()">Upgrade Now</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+function startSubscription() {
+    // Add your subscription logic here
+    console.log('Starting subscription process...');
+}
+</script>
+{% endblock %} 
