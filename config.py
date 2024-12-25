@@ -18,3 +18,5 @@ class Config:
     @staticmethod
     def init_app(app):
         os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True) 
+
+    ALLOWED_EXTENSIONS = {'pdf'} 

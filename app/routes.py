@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, send_file, current_app, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, send_file, current_app, redirect, url_for, flash, session, jsonify
 import os
 from werkzeug.utils import secure_filename
 from deep_translator import GoogleTranslator
@@ -210,50 +210,30 @@ def translate_document():
         return f"Translation failed: {str(e)}", 500
 
 @main.route('/convert', methods=['POST'])
-def convert():
-    try:
-        if 'file' not in request.files:
-            current_app.logger.error('No file in request')
-            return 'No file uploaded', 400
+def convert_file():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'}), 400
+    
+    file = request.files['file']
+    output_format = request.form.get('format', 'docx')
+    
+    if file and allowed_file(file.filename):
+        # Save uploaded file
+        filename = secure_filename(file.filename)
+        upload_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        file.save(upload_path)
         
-        file = request.files['file']
-        if file.filename == '':
-            current_app.logger.error('No file selected')
-            return 'No file selected', 400
-            
-        if file and file.filename.endswith('.pdf'):
-            # Save uploaded PDF
-            filename = secure_filename(file.filename)
-            pdf_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            file.save(pdf_path)
-            
-            try:
-                # Convert PDF to DOCX
-                docx_path = pdf_path.replace('.pdf', '.docx')
-                cv = PDFConverter(pdf_path)
-                cv.convert(docx_path)
-                cv.close()
-                
-                # Send the converted file
-                return send_file(
-                    docx_path,
-                    as_attachment=True,
-                    download_name=filename.replace('.pdf', '.docx'),
-                    mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                )
-            finally:
-                # Clean up files
-                try:
-                    if os.path.exists(pdf_path):
-                        os.remove(pdf_path)
-                    if os.path.exists(docx_path):
-                        os.remove(docx_path)
-                except Exception as e:
-                    current_app.logger.error(f'Error cleaning up files: {str(e)}')
-                    
-    except Exception as e:
-        current_app.logger.error(f'Conversion error: {str(e)}')
-        return f'Conversion failed: {str(e)}', 500
+        # Convert file (implement conversion logic here)
+        converted_file = convert_document(upload_path, output_format)
+        
+        # Return converted file
+        return send_file(
+            converted_file,
+            as_attachment=True,
+            download_name=f'converted.{output_format}'
+        )
+    
+    return jsonify({'error': 'Invalid file'}), 400
 
 @main.route('/features')
 def features():
