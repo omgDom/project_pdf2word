@@ -22,6 +22,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Add Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <a href="{{ url_for('main.index') }}">SimpleDoc</a>
+            </div>
+            <div class="navbar-links">
+                <a href="{{ url_for('main.features') }}" class="nav-link">Features</a>
+                <a href="{{ url_for('main.pricing') }}" class="nav-link">Pricing</a>
+                <a href="{{ url_for('main.signin') }}" class="nav-link">Sign In</a>
+                <a href="{{ url_for('main.signup') }}" class="nav-link signup-btn">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="theme-toggle">
         <input type="checkbox" id="darkModeToggle" class="dark-mode-input">
         <label for="darkModeToggle" class="dark-mode-label">
