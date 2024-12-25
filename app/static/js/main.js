@@ -8,6 +8,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const progressContainer = document.getElementById('progressContainer');
     const progressFill = document.querySelector('.progress-fill');
     const progressPercentage = document.querySelector('.progress-percentage');
+    const formatSelect = document.getElementById('formatSelect');
+
+    // Add conversion tracking
+    const MAX_FREE_CONVERSIONS = 5;
+    let conversionsUsed = parseInt(localStorage.getItem('conversionsUsed')) || 0;
+    
+    // Add conversion counter display
+    const counterDiv = document.createElement('div');
+    counterDiv.className = 'conversions-counter';
+    counterDiv.innerHTML = `
+        <span>${MAX_FREE_CONVERSIONS - conversionsUsed} free conversions remaining</span>
+    `;
+    document.querySelector('.converter-container').prepend(counterDiv);
+
+    // Update button text when format changes
+    formatSelect.addEventListener('change', function() {
+        const selectedFormat = formatSelect.options[formatSelect.selectedIndex].text;
+        convertButton.textContent = `Convert to ${selectedFormat}`;
+    });
+
+    // Set initial button text
+    const initialFormat = formatSelect.options[formatSelect.selectedIndex].text;
+    convertButton.textContent = `Convert to ${initialFormat}`;
 
     // Drag and drop functionality
     uploadArea.addEventListener('dragover', (e) => {
@@ -57,6 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Simulated conversion process
     function startConversion(file) {
+        // Check if user has free conversions left
+        if (conversionsUsed >= MAX_FREE_CONVERSIONS) {
+            showUpgradeModal();
+            return;
+        }
+
         convertButton.disabled = true;
         progressContainer.style.display = 'block';
         let progress = 0;
@@ -69,11 +98,45 @@ document.addEventListener('DOMContentLoaded', function() {
             if (progress >= 100) {
                 clearInterval(interval);
                 setTimeout(() => {
-                    alert('Conversion completed!');
-                    resetForm();
+                    // Increment conversion counter
+                    conversionsUsed++;
+                    localStorage.setItem('conversionsUsed', conversionsUsed);
+                    updateConversionCounter();
+                    
+                    // Show download button
+                    showDownloadButton();
                 }, 500);
             }
         }, 50);
+    }
+
+    function updateConversionCounter() {
+        const remaining = MAX_FREE_CONVERSIONS - conversionsUsed;
+        document.querySelector('.conversions-counter span').textContent = 
+            `${remaining} free conversions remaining`;
+    }
+
+    function showUpgradeModal() {
+        const modal = document.createElement('div');
+        modal.className = 'upgrade-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h2>Upgrade Your Account</h2>
+                <p>You've used all your free conversions. Choose an option to continue:</p>
+                <div class="upgrade-options">
+                    <a href="/signup" class="upgrade-btn">Create Free Account</a>
+                    <a href="/pricing" class="upgrade-btn premium">Go Premium</a>
+                </div>
+                <button class="modal-close">&times;</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Close modal functionality
+        modal.querySelector('.modal-close').onclick = () => modal.remove();
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.remove();
+        };
     }
 
     // Reset the form after conversion
