@@ -93,5 +93,18 @@
             </div>
         </div>
     </div>
+
+    <div id="cookie-banner" class="cookie-banner">
+        <div class="cookie-content">
+            <p>
+                This site uses cookies to enhance site navigation and personalize your experience. 
+                By using this site you agree to our use of cookies as described in our 
+                <a href="{{ url_for('main.privacy') }}">Privacy Notice</a>. 
+                You can modify your selections by visiting our 
+                <a href="{{ url_for('main.cookies') }}">Cookie and Advertising Notice</a>.
+            </p>
+            <button id="accept-cookies" class="cookie-accept">Accept</button>
+        </div>
+    </div>
 </body>
 </html>     
