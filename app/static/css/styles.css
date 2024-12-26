@@ -619,17 +619,23 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1100;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
 .modal.show {
     display: flex;
-    align-items: center;
     justify-content: center;
-    opacity: 1;
+    align-items: center;
+}
+
+.modal-content {
+    background: var(--bg-color);
+    padding: 2rem;
+    border-radius: 8px;
+    position: relative;
+    width: 90%;
+    max-width: 400px;
 }
 
 .signin-modal {
@@ -1897,4 +1903,619 @@ html {
         display: inline-block;
         margin-right: 0.5rem; /* Space between inline buttons */
     }
-} 
+}
+
+/* Pricing Section Styles */
+.pricing-header {
+    text-align: center;
+    margin: 4rem 0;
+}
+
+.pricing-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.pricing-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.pricing-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-card.featured {
+    border: 2px solid var(--primary-color);
+    transform: scale(1.05);
+}
+
+.popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.yearly-savings {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    margin-top: 0.5rem;
+    transition: opacity 0.3s ease;
+}
+
+.yearly-savings.show {
+    opacity: 1;
+    height: auto;
+    margin-top: 0.5rem;
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.card-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.price .currency {
+    font-size: 1.5rem;
+}
+
+.price .price-period {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    margin-left: 0.25rem;
+}
+
+.card-features {
+    margin: 2rem 0;
+}
+
+.card-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-features li {
+    margin: 1rem 0;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-features i {
+    color: var(--primary-color);
+}
+
+.card-button {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 8px;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.card-button:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.card-button.featured-button {
+    background: var(--primary-color);
+    color: white;
+}
+
+.card-button.featured-button:hover {
+    background: transparent;
+    color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .pricing-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .pricing-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .pricing-card.featured {
+        transform: none;
+    }
+}
+
+/* Auth footer styling */
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.auth-footer p {
+    color: var(--text-color);
+}
+
+.signin-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.signin-link:hover {
+    text-decoration: underline;
+}
+
+/* Footer Styles */
+.footer {
+    background: var(--bg-color);
+    border-top: 1px solid var(--border-color);
+    padding: 4rem 2rem 2rem;
+    margin-top: 4rem;
+    width: 100%;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    padding: 0 2rem;
+}
+
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.footer-section h3 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.footer-section h4 {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.footer-section p {
+    color: var(--text-secondary);
+    margin: 0;
+    max-width: 300px;
+    line-height: 1.6;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-top: 3rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        padding: 0 1rem;
+    }
+
+    .footer-section:first-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .footer {
+        padding: 3rem 1.5rem 1.5rem;
+    }
+}
+
+/* Page wrapper */
+.page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content area */
+.container {
+    flex: 1;
+}
+
+/* About Page Styles */
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.about-hero {
+    text-align: center;
+    padding: 4rem 0;
+}
+
+.about-hero h1 {
+    font-size: 3rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.about-hero .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+}
+
+.about-section {
+    margin: 4rem 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.mission-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.mission-card {
+    padding: 2rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.mission-card i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.mission-card h3 {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.mission-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.team-member {
+    text-align: center;
+}
+
+.member-image {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.member-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-member h3 {
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.team-member .role {
+    color: var(--text-secondary);
+}
+
+.contact-section {
+    text-align: center;
+}
+
+.contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.contact-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .mission-cards,
+    .team-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .mission-cards,
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-hero h1 {
+        font-size: 2rem;
+    }
+}
+
+/* Pricing Toggle */
+.pricing-toggle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.pricing-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: var(--card-bg);
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+/* Animation for Yearly text when active */
+.toggle-text.yearly-active {
+    color: var(--error-color);
+    font-size: 1.3rem;
+    font-weight: 600;
+    animation: growPulse 2s infinite;
+}
+
+@keyframes growPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Switch styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 32px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-secondary);
+    transition: .4s;
+    border-radius: 34px;
+    border: 2px solid var(--border-color);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 24px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--primary-color);
+    transition: .4s;
+    border-radius: 50%;
+}
+
+/* Only change the ball color to red when toggled */
+input:checked + .slider:before {
+    transform: translateX(28px);
+    background-color: var(--error-color);
+}
+
+/* Keep original background color */
+input:checked + .slider {
+    background-color: var(--bg-secondary);
+}
+
+input:checked + .slider {
+    background-color: var(--bg-secondary);
+}
+
+input:checked + .slider:before {
+    transform: translateX(28px);
+}
+
+.save-badge {
+    color: var(--error-color);
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    height: 20px; /* Fixed height to prevent layout shift */
+}
+
+.yearly-savings {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--error-color);
+    margin-top: 0.5rem;
+    transition: opacity 0.3s ease;
+}
+
+.yearly-savings.show {
+    opacity: 1;
+    height: auto;
+    margin-top: 0.5rem;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .slider {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+.pricing-title {
+    text-align: center;
+    margin: 3rem 0;
+    font-size: 2.5rem;
+    color: var(--text-color);
+}
+
+.pricing-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+
+.enterprise-price {
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.contact-text {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.price-subtext {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.price-period {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 0.25rem;
+}
+
+.annual-note {
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    white-space: nowrap;
+}
