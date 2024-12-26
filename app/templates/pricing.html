@@ -2,39 +2,91 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <nav class="nav-menu">
-        <a href="{{ url_for('main.index') }}" class="nav-link">PDF Converter</a>
-        <a href="{{ url_for('main.translate_page') }}" class="nav-link">Document Translator</a>
-    </nav>
+<div class="container pricing-page">
+    <h2 class="pricing-title">Pricing</h2>
+    
+    <!-- Pricing Toggle -->
+    <div class="pricing-toggle-container">
+        <div class="pricing-toggle">
+            <span class="toggle-text">Monthly</span>
+            <label class="switch">
+                <input type="checkbox" id="pricingToggle">
+                <span class="slider"></span>
+            </label>
+            <span class="toggle-text" id="yearlyText">Yearly</span>
+        </div>
+        <div class="save-badge">Save 20% annually</div>
+    </div>
 
+    <!-- Pricing Cards -->
     <div class="pricing-cards">
-        <div class="pricing-card">
-            <div class="pricing-header">
-                <h2>Free</h2>
-                <p class="price">$0</p>
+        <!-- Current Plan -->
+        <div class="pricing-card" data-monthly="0" data-yearly="0">
+            <div class="card-header">
+                <h3>Current</h3>
+                <div class="price">
+                    <span class="currency">$</span>
+                    <span class="price-amount">0</span>
+                    <span class="price-period">/month</span>
+                </div>
+                <div class="yearly-savings"></div>
             </div>
-            <ul class="features">
-                <li><i class="fas fa-check"></i> PDF to Word Conversion</li>
-                <li><i class="fas fa-check"></i> Basic File Support</li>
-                <li><i class="fas fa-times"></i> Document Translation</li>
-                <li><i class="fas fa-times"></i> Priority Support</li>
-            </ul>
-            <button class="current-plan">Current Plan</button>
+            <div class="card-features">
+                <ul>
+                    <li><i class="fas fa-check"></i> 5 Documents per day</li>
+                    <li><i class="fas fa-check"></i> Basic file formats</li>
+                    <li><i class="fas fa-check"></i> Email support</li>
+                    <li><i class="fas fa-check"></i> Basic cloud storage</li>
+                </ul>
+            </div>
+            <a href="#" class="card-button">Current Plan</a>
         </div>
 
-        <div class="pricing-card premium">
-            <div class="pricing-header">
-                <h2>Premium</h2>
-                <p class="price">$9.99<span>/month</span></p>
+        <!-- Premium Plan -->
+        <div class="pricing-card featured" data-monthly="14.99" data-yearly="11.99">
+            <div class="popular-badge">Most Popular</div>
+            <div class="card-header">
+                <h3>Premium</h3>
+                <div class="price">
+                    <span class="currency">$</span>
+                    <span class="price-amount">14.99</span>
+                    <span class="price-period">/month</span>
+                </div>
+                <div class="yearly-savings"></div>
             </div>
-            <ul class="features">
-                <li><i class="fas fa-check"></i> PDF to Word Conversion</li>
-                <li><i class="fas fa-check"></i> Advanced File Support</li>
-                <li><i class="fas fa-check"></i> Document Translation</li>
-                <li><i class="fas fa-check"></i> Priority Support</li>
-            </ul>
-            <button class="upgrade-btn" onclick="startSubscription()">Upgrade Now</button>
+            <div class="card-features">
+                <ul>
+                    <li><i class="fas fa-check"></i> Unlimited documents</li>
+                    <li><i class="fas fa-check"></i> All file formats</li>
+                    <li><i class="fas fa-check"></i> Priority support</li>
+                    <li><i class="fas fa-check"></i> Advanced cloud integration</li>
+                    <li><i class="fas fa-check"></i> API access</li>
+                    <li><i class="fas fa-check"></i> Custom branding</li>
+                </ul>
+            </div>
+            <a href="#" class="card-button featured-button">Get Started</a>
+        </div>
+
+        <!-- Business Plan -->
+        <div class="pricing-card" data-monthly="0" data-yearly="0">
+            <div class="card-header">
+                <h3>Business</h3>
+                <div class="price enterprise-price">
+                    <span class="contact-text">Contact Sales</span>
+                    <span class="price-subtext">Custom pricing for your needs</span>
+                </div>
+            </div>
+            <div class="card-features">
+                <ul>
+                    <li><i class="fas fa-check"></i> Everything in Premium</li>
+                    <li><i class="fas fa-check"></i> Team collaboration</li>
+                    <li><i class="fas fa-check"></i> Advanced analytics</li>
+                    <li><i class="fas fa-check"></i> 24/7 phone support</li>
+                    <li><i class="fas fa-check"></i> Custom workflows</li>
+                    <li><i class="fas fa-check"></i> SSO & admin controls</li>
+                </ul>
+            </div>
+            <a href="#" class="card-button">Contact Sales</a>
         </div>
     </div>
 </div>
@@ -42,10 +94,10 @@
 
 {% block scripts %}
 {{ super() }}
+<script src="{{ url_for('static', filename='js/pricing.js') }}"></script>
 <script>
-function startSubscription() {
-    // Add your subscription logic here
-    console.log('Starting subscription process...');
-}
+document.getElementById('upgradeButton').addEventListener('click', function() {
+    window.location.href = "{{ url_for('main.signup') }}";
+});
 </script>
 {% endblock %} 
