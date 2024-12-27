@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
     <script>
         (function() {
@@ -22,53 +22,101 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Add Navbar -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <div class="navbar-logo">
-                <a href="{{ url_for('main.index') }}">SimpleDoc</a>
+    <div class="page-wrapper">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <div class="navbar-logo">
+                    <a href="{{ url_for('main.index') }}">SimpleDoc</a>
+                </div>
+                <div class="navbar-links">
+                    <a href="{{ url_for('main.features') }}" class="nav-link">Features</a>
+                    <a href="{{ url_for('main.pricing') }}" class="nav-link">Pricing</a>
+                    <a href="#" class="nav-link" id="signInButton">Sign In</a>
+                    <a href="{{ url_for('main.signup') }}" class="nav-link signup-btn">Sign Up</a>
+                    <div class="theme-toggle">
+                        <input type="checkbox" id="darkModeToggle" class="dark-mode-input">
+                        <label for="darkModeToggle" class="dark-mode-label">
+                            <i class="fas fa-sun"></i>
+                            <i class="fas fa-moon"></i>
+                        </label>
+                    </div>
+                </div>
             </div>
-            <div class="navbar-links">
-                <a href="{{ url_for('main.features') }}" class="nav-link">Features</a>
-                <a href="{{ url_for('main.pricing') }}" class="nav-link">Pricing</a>
-                <a href="#" class="nav-link" id="signInButton">Sign In</a>
-                <a href="{{ url_for('main.signup') }}" class="nav-link signup-btn">Sign Up</a>
-            </div>
-        </div>
-    </nav>
+        </nav>
 
-    <div class="theme-toggle">
-        <input type="checkbox" id="darkModeToggle" class="dark-mode-input">
-        <label for="darkModeToggle" class="dark-mode-label">
-            <i class="fas fa-sun"></i>
-            <i class="fas fa-moon"></i>
-        </label>
+        {% block content %}{% endblock %}
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SimpleDoc</h3>
+                    <p>Transform your documents instantly with our powerful tools.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="{{ url_for('main.features') }}">Features</a></li>
+                        <li><a href="{{ url_for('main.pricing') }}">Pricing</a></li>
+                        <li><a href="#cloud-services">Integrations</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="{{ url_for('main.about') }}">About</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
+                        <li><a href="{{ url_for('main.cookies') }}">Cookie Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {{ now.year }} SimpleDoc. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
 
-    {% block content %}{% endblock %}
-    
-    {% block scripts %}
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/signin.js') }}"></script>
-    {% endblock %}
-
-    <!-- Add this modal HTML before the closing body tag -->
+    <!-- Sign In Modal -->
     <div id="signInModal" class="modal">
         <div class="modal-content signin-modal">
             <button class="modal-close">&times;</button>
             <h2>Welcome Back</h2>
-            <form id="signInForm" class="signin-form">
+            <form id="baseSignInForm" class="signin-form">
                 <div class="form-group">
-                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="email" 
+                           id="baseSignInEmail" 
+                           placeholder="Email" 
+                           required 
+                           autocomplete="email">
                 </div>
                 <div class="form-group">
-                    <input type="password" id="password" placeholder="Password" required>
+                    <input type="password" 
+                           id="baseSignInPassword" 
+                           placeholder="Password" 
+                           required 
+                           autocomplete="current-password">
                 </div>
                 <div class="form-options">
                     <label class="remember-me">
-                        <input type="checkbox" id="rememberMe">
+                        <input type="checkbox" 
+                               id="baseRememberMe" 
+                               autocomplete="off">
                         <span>Remember me</span>
                     </label>
                     <a href="#" class="forgot-password">Forgot password?</a>
@@ -94,17 +142,15 @@
         </div>
     </div>
 
-    <div id="cookie-banner" class="cookie-banner">
-        <div class="cookie-content">
-            <p>
-                This site uses cookies to enhance site navigation and personalize your experience. 
-                By using this site you agree to our use of cookies as described in our 
-                <a href="{{ url_for('main.privacy') }}">Privacy Notice</a>. 
-                You can modify your selections by visiting our 
-                <a href="{{ url_for('main.cookies') }}">Cookie and Advertising Notice</a>.
-            </p>
-            <button id="accept-cookies" class="cookie-accept">Accept</button>
-        </div>
-    </div>
+    <!-- Scripts in correct order -->
+    <script src="{{ url_for('static', filename='js/error-handler.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/constants.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/file-handler.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/converter.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/init.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/signin.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pricing.js') }}"></script>
 </body>
 </html>     

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-container">
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <h1>About SimpleDoc</h1>
+        <p class="subtitle">Making document management simple and efficient</p>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="about-section">
+        <div class="section-header">
+            <h2>Our Story</h2>
+        </div>
+        <div class="about-content">
+            <p>SimpleDoc was founded with a clear mission: to simplify document management for everyone. We understand the frustration of dealing with incompatible file formats and complex conversion processes. That's why we created a solution that makes document conversion seamless and accessible.</p>
+        </div>
+    </section>
+
+    <!-- Our Mission Section -->
+    <section class="about-section">
+        <div class="section-header">
+            <h2>Our Mission</h2>
+        </div>
+        <div class="about-content">
+            <div class="mission-cards">
+                <div class="mission-card">
+                    <i class="fas fa-lock"></i>
+                    <h3>Security First</h3>
+                    <p>Your privacy and data security are our top priorities. We use enterprise-grade encryption to protect your documents.</p>
+                </div>
+                <div class="mission-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Innovation</h3>
+                    <p>We continuously improve our technology to provide the fastest and most accurate document conversion.</p>
+                </div>
+                <div class="mission-card">
+                    <i class="fas fa-users"></i>
+                    <h3>User Focused</h3>
+                    <p>Every feature we develop is designed with our users in mind, making document management intuitive and efficient.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="about-section">
+        <div class="section-header">
+            <h2>Our Team</h2>
+            <p>Meet the people behind SimpleDoc</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="member-image">
+                    <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="Team Member">
+                </div>
+                <h3>John Doe</h3>
+                <p class="role">CEO & Founder</p>
+            </div>
+            <div class="team-member">
+                <div class="member-image">
+                    <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="Team Member">
+                </div>
+                <h3>Jane Smith</h3>
+                <p class="role">CTO</p>
+            </div>
+            <div class="team-member">
+                <div class="member-image">
+                    <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="Team Member">
+                </div>
+                <h3>Mike Johnson</h3>
+                <p class="role">Head of Design</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="about-section contact-section">
+        <div class="section-header">
+            <h2>Get in Touch</h2>
+            <p>Have questions? We'd love to hear from you.</p>
+        </div>
+        <div class="contact-content">
+            <a href="mailto:contact@simpledoc.com" class="contact-btn">
+                <i class="fas fa-envelope"></i>
+                Contact Us
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %} 

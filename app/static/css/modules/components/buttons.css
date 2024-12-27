@@ -20,10 +20,10 @@
 
 /* Theme Toggle Button */
 .theme-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
 }
 
 .dark-mode-input {

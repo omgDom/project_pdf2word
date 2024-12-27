@@ -5,6 +5,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const yearlyText = document.getElementById('yearlyText');
     const saveArrow = document.querySelector('.save-arrow');
 
+    // Add click handlers for cards
+    pricingCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Don't trigger if clicking the button
+            if (e.target.classList.contains('card-button')) {
+                return;
+            }
+            
+            // Remove selected class from all cards
+            pricingCards.forEach(c => c.classList.remove('selected'));
+            // Add selected class to clicked card
+            this.classList.add('selected');
+        });
+
+        // Get the button in this card
+        const button = card.querySelector('.card-button');
+        if (button && !button.textContent.includes('Contact Sales')) {
+            button.addEventListener('click', function(e) {
+                // You could add plan selection to URL if needed
+                const plan = card.classList.contains('featured') ? 'premium' : 'current';
+                const billing = pricingToggle.checked ? 'yearly' : 'monthly';
+                
+                // Redirect with plan info
+                window.location.href = `${this.href}?plan=${plan}&billing=${billing}`;
+                e.preventDefault();
+            });
+        }
+    });
+
     function updatePrices(isYearly) {
         pricingCards.forEach(card => {
             const monthlyPrice = parseFloat(card.dataset.monthly);

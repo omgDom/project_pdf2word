@@ -1,34 +1,22 @@
-// UI-related logic
+// REMOVE the entire class and initialization
 class UIController {
     constructor() {
-        this.initializeFormatSelector();
+        // ... remove all this code ...
     }
-
+    
     initializeFormatSelector() {
-        const formatSelector = document.getElementById('outputFormat');
-        const convertButton = document.getElementById('convertButton');
-
-        if (formatSelector && convertButton) {
-            // Set initial button text
-            this.updateConvertButtonText(formatSelector.value);
-
-            // Update button text when format changes
-            formatSelector.addEventListener('change', (e) => {
-                this.updateConvertButtonText(e.target.value);
-            });
-        }
+        // ... remove all this code ...
     }
-
-    updateConvertButtonText(format) {
-        const convertButton = document.getElementById('convertButton');
-        if (convertButton) {
-            const formatText = format.toUpperCase();
-            convertButton.textContent = `Convert to ${formatText}`;
-        }
+    
+    updateConvertButtonText() {
+        // ... remove all this code ...
     }
 }
 
+// Remove this line
+const uiController = new UIController(); 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Initializing UI Controller');
     new UIController();
 }); 

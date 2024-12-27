@@ -2,8 +2,72 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <h1>Features</h1>
-    <!-- Add your features content here -->
+<div class="container features-page">
+    <h1 class="features-title">Features</h1>
+    
+    <!-- PDF Converter Section -->
+    <section class="feature-section">
+        <h2>PDF Converter</h2>
+        <div class="feature-content">
+            <div class="feature-description">
+                <p>Convert your PDFs to various formats with ease. Support for Word, Excel, PowerPoint, and more.</p>
+                <ul class="feature-list">
+                    <li>Multiple output formats</li>
+                    <li>Batch conversion</li>
+                    <li>Maintain formatting</li>
+                    <li>Fast processing</li>
+                </ul>
+                <a href="{{ url_for('main.index') }}" class="try-now-btn">Try Now</a>
+            </div>
+            <div class="feature-image">
+                <img src="{{ url_for('static', filename='images/converter.svg') }}" alt="PDF Converter">
+            </div>
+        </div>
+    </section>
+
+    <!-- PDF Editor Section -->
+    <section class="feature-section editor-section">
+        <h2>PDF Editor <span class="premium-badge">Premium</span></h2>
+        <div class="feature-content">
+            <div class="feature-description">
+                <p>Edit, sign, and collaborate on PDFs in real-time. Professional tools for all your document needs.</p>
+                <ul class="feature-list">
+                    <li>Edit text and images directly</li>
+                    <li>Add digital signatures</li>
+                    <li>Annotate and comment</li>
+                    <li>Real-time collaboration</li>
+                    <li>Form filling and creation</li>
+                    <li>Secure document sharing</li>
+                </ul>
+                <div class="feature-buttons">
+                    <a href="{{ url_for('main.pricing') }}" class="premium-btn">Upgrade to Premium</a>
+                    <a href="#" class="demo-btn">Watch Demo</a>
+                </div>
+            </div>
+            <div class="feature-image">
+                <img src="{{ url_for('static', filename='images/editor.svg') }}" alt="PDF Editor">
+            </div>
+        </div>
+    </section>
+
+    <!-- Document Translator Section -->
+    <section class="feature-section translator-section">
+        <h2>Document Translator <span class="premium-badge">Premium</span></h2>
+        <div class="feature-content">
+            <div class="feature-description">
+                <p>Translate your documents while maintaining their original formatting. Support for 100+ languages.</p>
+                <ul class="feature-list">
+                    <li>Preserve document layout</li>
+                    <li>Support for multiple languages</li>
+                    <li>AI-powered translation</li>
+                    <li>Batch translation</li>
+                </ul>
+                <a href="{{ url_for('main.pricing') }}" class="premium-btn">Upgrade to Premium</a>
+            </div>
+            <div class="feature-image">
+                <img src="{{ url_for('static', filename='images/translator.svg') }}" alt="Document Translator">
+            </div>
+        </div>
+    </section>
 </div>
 {% endblock %} 
