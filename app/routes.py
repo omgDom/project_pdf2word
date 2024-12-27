@@ -10,6 +10,19 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import simpleSplit
 from functools import wraps
+from pdf2docx import Converter
+from datetime import datetime
+from docx import Document
+from docx.shared import Inches, Pt
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from pdf2docx import parse
+from PyPDF2 import PdfReader
+from PIL import Image
+import fitz  # PyMuPDF
+import markdown
+import subprocess
+from docx2pdf import convert
+import io
 
 main = Blueprint('main', __name__)
 
@@ -209,31 +222,185 @@ def translate_document():
         current_app.logger.error(f"Translation error: {str(e)}")
         return f"Translation failed: {str(e)}", 500
 
+ALLOWED_EXTENSIONS = {'pdf'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def convert_document(file_path, output_format):
+    try:
+        output_path = os.path.splitext(file_path)[0] + f'.{output_format}'
+        
+        if output_format == 'docx':
+            # Existing DOCX conversion
+            pdf = PdfReader(file_path)
+            total_pages = len(pdf.pages)
+            parse(file_path, output_path, start=0, end=total_pages)
+            
+            # Set document properties
+            doc = Document(output_path)
+            doc.core_properties.author = "PDF Converter"
+            doc.core_properties.title = os.path.basename(file_path)
+            doc.save(output_path)
+            
+        elif output_format == 'txt':
+            # Convert PDF to text
+            pdf = PdfReader(file_path)
+            with open(output_path, 'w', encoding='utf-8') as txt_file:
+                for page in pdf.pages:
+                    text = page.extract_text()
+                    if text:
+                        txt_file.write(text + '\n\n')
+
+        elif output_format == 'rtf':
+            # Convert to DOCX first, then to RTF
+            temp_docx = output_path + '.temp.docx'
+            parse(file_path, temp_docx)
+            
+            # Use soffice (LibreOffice) to convert DOCX to RTF
+            subprocess.run(['soffice', '--headless', '--convert-to', 'rtf', '--outdir', 
+                          os.path.dirname(output_path), temp_docx])
+            
+            # Cleanup temp file
+            if os.path.exists(temp_docx):
+                os.remove(temp_docx)
+
+        elif output_format == 'xlsx':
+            # Convert PDF to XLSX using Tabula
+            from tabula import read_pdf
+            df = read_pdf(file_path, pages='all')
+            if isinstance(df, list):
+                import pandas as pd
+                writer = pd.ExcelWriter(output_path, engine='openpyxl')
+                for i, table in enumerate(df):
+                    table.to_excel(writer, sheet_name=f'Sheet{i+1}', index=False)
+                writer.close()
+
+        elif output_format == 'pptx':
+            from pdf2pptx import convert_pdf_to_pptx
+            convert_pdf_to_pptx(file_path, output_path)
+
+        elif output_format == 'epub':
+            # Convert to HTML first
+            temp_html = output_path + '.temp.html'
+            pdf = fitz.open(file_path)
+            html_content = ""
+            for page in pdf:
+                html_content += page.get_text("html")
+            with open(temp_html, 'w', encoding='utf-8') as f:
+                f.write(html_content)
+            
+            # Convert HTML to EPUB using Pandoc
+            subprocess.run(['pandoc', '-f', 'html', '-t', 'epub', '-o', output_path, temp_html])
+            
+            # Cleanup
+            if os.path.exists(temp_html):
+                os.remove(temp_html)
+
+        elif output_format == 'html':
+            pdf = fitz.open(file_path)
+            html_content = ""
+            for page in pdf:
+                html_content += page.get_text("html")
+            with open(output_path, 'w', encoding='utf-8') as f:
+                f.write(html_content)
+
+        elif output_format == 'md':
+            # Convert to HTML first, then to Markdown
+            pdf = fitz.open(file_path)
+            html_content = ""
+            for page in pdf:
+                html_content += page.get_text("html")
+            
+            # Convert HTML to Markdown
+            from html2text import html2text
+            md_content = html2text(html_content)
+            with open(output_path, 'w', encoding='utf-8') as f:
+                f.write(md_content)
+
+        elif output_format == 'odt':
+            # Convert to DOCX first, then to ODT
+            temp_docx = output_path + '.temp.docx'
+            parse(file_path, temp_docx)
+            
+            # Use LibreOffice to convert to ODT
+            subprocess.run(['soffice', '--headless', '--convert-to', 'odt', '--outdir', 
+                          os.path.dirname(output_path), temp_docx])
+            
+            # Cleanup
+            if os.path.exists(temp_docx):
+                os.remove(temp_docx)
+
+        elif output_format == 'jpeg':
+            pdf = fitz.open(file_path)
+            for i, page in enumerate(pdf):
+                pix = page.get_pixmap()
+                img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+                if i == 0:  # Save first page only
+                    img.save(output_path, 'JPEG', quality=95)
+                    break
+
+        else:
+            raise ValueError(f"Conversion to {output_format} not yet implemented")
+            
+        return output_path
+            
+    except Exception as e:
+        current_app.logger.error(f"Conversion error: {str(e)}")
+        raise Exception(f"Conversion failed: {str(e)}")
+
 @main.route('/convert', methods=['POST'])
 def convert_file():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file uploaded'}), 400
-    
-    file = request.files['file']
-    output_format = request.form.get('format', 'docx')
-    
-    if file and allowed_file(file.filename):
-        # Save uploaded file
-        filename = secure_filename(file.filename)
-        upload_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-        file.save(upload_path)
+    try:
+        if 'file' not in request.files:
+            current_app.logger.error("No file in request")
+            return jsonify({'error': 'No file uploaded'}), 400
         
-        # Convert file (implement conversion logic here)
-        converted_file = convert_document(upload_path, output_format)
+        file = request.files['file']
+        output_format = request.form.get('format', 'docx')
         
-        # Return converted file
-        return send_file(
-            converted_file,
-            as_attachment=True,
-            download_name=f'converted.{output_format}'
-        )
-    
-    return jsonify({'error': 'Invalid file'}), 400
+        current_app.logger.info(f"Converting file: {file.filename} to {output_format}")
+        
+        if file and allowed_file(file.filename):
+            original_name = os.path.splitext(file.filename)[0]
+            uploads_dir = os.path.join(current_app.root_path, 'uploads')
+            
+            if not os.path.exists(uploads_dir):
+                os.makedirs(uploads_dir)
+            
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(uploads_dir, filename)
+            file.save(file_path)
+            
+            current_app.logger.info(f"File saved to: {file_path}")
+            
+            try:
+                converted_file_path = convert_document(file_path, output_format)
+                current_app.logger.info(f"File converted successfully: {converted_file_path}")
+                
+                return send_file(
+                    converted_file_path,
+                    as_attachment=True,
+                    download_name=f'{original_name}.{output_format}'
+                )
+                
+            except Exception as e:
+                current_app.logger.error(f"Conversion error: {str(e)}")
+                return jsonify({'error': str(e)}), 500
+                
+            finally:
+                # Cleanup files
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                if 'converted_file_path' in locals() and os.path.exists(converted_file_path):
+                    os.remove(converted_file_path)
+        
+        current_app.logger.error(f"Invalid file: {file.filename}")
+        return jsonify({'error': 'Invalid file'}), 400
+        
+    except Exception as e:
+        current_app.logger.error(f"Unexpected error: {str(e)}")
+        return jsonify({'error': 'An unexpected error occurred'}), 500
 
 @main.route('/features')
 def features():
@@ -250,3 +417,19 @@ def signin():
 @main.route('/signup')
 def signup():
     return render_template('signup.html', title='Sign Up')
+
+@main.route('/privacy')
+def privacy():
+    return render_template('privacy.html', title='Privacy Notice')
+
+@main.route('/cookies')
+def cookies():
+    return render_template('cookies.html', title='Cookie and Advertising Notice')
+
+@main.route('/about')
+def about():
+    return render_template('about.html', title='About Us')
+
+@main.context_processor
+def inject_now():
+    return {'now': datetime.utcnow()}

@@ -3,14 +3,56 @@
 
 {% block content %}
 <div class="container">
-    <!-- Navigation Menu -->
-    <nav class="nav-menu">
-        <a href="{{ url_for('main.index') }}" class="nav-link active">Simple Doc</a>
-        <a href="{{ url_for('main.translate_page') }}" class="nav-link">
-            Document Translator
-            <span class="premium-badge">Premium</span>
+    <!-- Hero Section with Animated CTA -->
+    <div class="hero-section">
+        <h1 class="hero-title">Transform Your Documents <span class="gradient-text">Instantly</span></h1>
+        <p class="hero-subtitle">Convert PDFs to any format with just a few clicks</p>
+        <a href="{{ url_for('main.signup') }}" class="animated-cta">
+            <span class="cta-text">Get Started for Free</span>
+            <span class="cta-icon">→</span>
+            <div class="cta-glow"></div>
         </a>
-    </nav>
+    </div>
+
+    <!-- Add this after your hero section -->
+    <div class="companies-banner">
+        <div class="companies-scroll">
+            <div class="companies-container">
+                <!-- Repeat logos twice for seamless loop -->
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/companies/company1.png') }}" alt="Company 1">
+                </div>
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/companies/company2.png') }}" alt="Company 2">
+                </div>
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/companies/company3.png') }}" alt="Company 3">
+                </div>
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/companies/company4.png') }}" alt="Company 4">
+                </div>
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/companies/company5.png') }}" alt="Company 5">
+                </div>
+                <!-- Duplicate for seamless scroll -->
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/companies/company1.png') }}" alt="Company 1">
+                </div>
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/companies/company2.png') }}" alt="Company 2">
+                </div>
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/companies/company3.png') }}" alt="Company 3">
+                </div>
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/companies/company4.png') }}" alt="Company 4">
+                </div>
+                <div class="company-logo">
+                    <img src="{{ url_for('static', filename='images/companies/company5.png') }}" alt="Company 5">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Converter Section -->
     <div class="converter-container">
@@ -19,32 +61,26 @@
             <div class="upload-message">
                 <i class="fas fa-cloud-upload-alt"></i>
                 <p>Drag & drop your PDF here or</p>
-                <button id="browseButton" class="browse-btn">Browse Files</button>
+                <div class="upload-actions">
+                    <button id="browseButton" class="browse-btn">Browse Files</button>
+                    <a href="#cloud-services" class="cloud-link">
+                        <i class="fas fa-cloud"></i>
+                        Using cloud storage?
+                    </a>
+                </div>
             </div>
-        </div>
-
-        <!-- Format Selector moved below upload area -->
-        <div class="format-selector">
-            <label for="formatSelect">Select Output Format:</label>
-            <select id="formatSelect" class="format-select">
-                <option value="docx">Word Document (.docx)</option>
-                <option value="txt">Text File (.txt)</option>
-                <option value="rtf">Rich Text Format (.rtf)</option>
-                <option value="xlsx">Excel Spreadsheet (.xlsx)</option>
-                <option value="pptx">PowerPoint Presentation (.pptx)</option>
-                <option value="epub">E-Book (.epub)</option>
-                <option value="html">Web Page (.html)</option>
-                <option value="md">Markdown (.md)</option>
-                <option value="odt">OpenDocument Text (.odt)</option>
-                <option value="pages">Apple Pages (.pages)</option>
-                <option value="jpeg">JPEG Image (.jpeg)</option>
-                <option value="pdf">PDF Document (.pdf)</option>
-            </select>
         </div>
 
         <div id="filePreview" class="file-preview" style="display: none;">
             <p id="fileName"></p>
-            <button id="convertButton" class="convert-btn" disabled>Convert to Word</button>
+            <div class="format-selection">
+                <select id="outputFormat" class="format-select">
+                    <option value="docx">DOCX</option>
+                    <option value="txt">TXT</option>
+                    <option value="html">HTML</option>
+                </select>
+                <button id="convertButton" class="convert-btn" disabled>Convert</button>
+            </div>
         </div>
 
         <div id="progressContainer" class="progress-container" style="display: none;">
@@ -54,6 +90,51 @@
             <span class="progress-percentage">0%</span>
         </div>
     </div>
+
+    <!-- Cloud Services Section -->
+    <section class="cloud-services-section" id="cloud-services">
+        <div class="section-header">
+            <h2>Cloud Integration</h2>
+            <p>Seamlessly connect with your favorite cloud services</p>
+        </div>
+        <div class="cloud-services-grid">
+            <div class="cloud-service-card google-drive">
+                <div class="service-icon">
+                    <i class="fab fa-google-drive"></i>
+                </div>
+                <h3>Google Drive</h3>
+                <p>Import and export files directly from your Google Drive</p>
+                <button class="service-btn google-drive-btn">
+                    Connect Drive
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            
+            <div class="cloud-service-card gmail">
+                <div class="service-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Gmail</h3>
+                <p>Access and edit PDF attachments from your inbox</p>
+                <button class="service-btn gmail-btn">
+                    Connect Gmail
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            
+            <div class="cloud-service-card dropbox">
+                <div class="service-icon">
+                    <i class="fab fa-dropbox"></i>
+                </div>
+                <h3>Dropbox</h3>
+                <p>Sync your documents with Dropbox seamlessly</p>
+                <button class="service-btn dropbox-btn">
+                    Connect Dropbox
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
 
     <!-- Features Section -->
     <div class="features-section">
@@ -74,4 +155,6 @@
         </div>
     </div>
 </div>
+
+
 {% endblock %}

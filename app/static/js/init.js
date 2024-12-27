@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const fileHandler = new FileHandler();
-    const converter = new Converter();
+    console.log('Initializing application...');
+    
+    // Check if required classes are available
+    if (typeof FileHandler === 'undefined') {
+        console.error('FileHandler class not loaded');
+        return;
+    }
+
+    // Initialize FileHandler
+    window.fileHandler = new FileHandler();
 }); 
