@@ -2598,33 +2598,36 @@ input:checked + .slider:before {
 .companies-scroll {
     width: 100%;
     overflow: hidden;
+    position: relative;
+    padding: 2rem 0;
+    background: var(--bg-secondary);
 }
 
 .companies-container {
     display: flex;
+    align-items: center;
+    gap: 6rem;
     animation: scroll 30s linear infinite;
-    gap: 4rem;
+    /* Make sure all logos fit in view */
+    width: calc(150px * 6 + 210px + 6rem * 7); /* 14 logos (7 * 2 sets) with gaps */
+}
+
+.companies-container:hover {
+    animation-play-state: paused;
 }
 
 .company-logo {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 2rem;
-}
-
-.company-logo img {
-    height: 40px;
-    width: auto;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
+    width: 150px; /* Fixed width */
+    height: 50px; /* Fixed height */
+    object-fit: contain;
     filter: grayscale(100%);
+    opacity: 0.7;
+    transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
-.company-logo img:hover {
-    opacity: 1;
+.company-logo:hover {
     filter: grayscale(0%);
+    opacity: 1;
 }
 
 @keyframes scroll {
@@ -2632,7 +2635,15 @@ input:checked + .slider:before {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(-50%);
+        /* Move exactly one set of logos */
+        transform: translateX(calc(-150px * 7 - 4rem * 7)); /* 7 logos with gaps */
+    }
+}
+
+/* Ensure smooth animation */
+@media (prefers-reduced-motion: no-preference) {
+    .companies-container {
+        will-change: transform;
     }
 }
 
