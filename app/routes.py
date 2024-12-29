@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, send_file, current_app, redirect, url_for, flash, session, jsonify
+from flask_login import login_required, current_user
 import os
 from werkzeug.utils import secure_filename
 from deep_translator import GoogleTranslator
@@ -58,14 +59,9 @@ def index():
         return f"An error occurred: {str(e)}", 500
 
 @main.route('/translate')
-@premium_required
 def translate_page():
     """Route for the document translator page"""
     try:
-        # Add debug logging
-        current_app.logger.debug(f"Session premium status: {session.get('is_premium')}")
-        
-        # Extended language list
         languages = {
             'en': 'English',
             'es': 'Spanish',
@@ -74,8 +70,6 @@ def translate_page():
             'it': 'Italian',
             'pt': 'Portuguese',
             'ru': 'Russian',
-            'zh': 'Chinese',
-            'ja': 'Japanese',
             'ko': 'Korean',
             'ar': 'Arabic',
             'sv': 'Swedish'
@@ -404,7 +398,14 @@ def convert_file():
 
 @main.route('/features')
 def features():
-    return render_template('features.html', title='Features')
+    """Route for the features page"""
+    try:
+        return render_template('features.html', 
+                             title='Features',
+                             current_user=current_user)
+    except Exception as e:
+        current_app.logger.error(f"Error rendering features page: {str(e)}")
+        return f"An error occurred: {str(e)}", 500
 
 @main.route('/pricing')
 def pricing():
