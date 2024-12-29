@@ -2,7 +2,105 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!-- Your translator content -->
+<div class="container translator-page">
+    <div class="section-header">
+        <h1 class="translator-title">Document Translator</h1>
+        <p class="translator-subtitle">Translate your documents while preserving their original formatting</p>
+    </div>
+
+    <div class="translator-container">
+        <!-- File Upload Section -->
+        <div class="upload-section">
+            <div class="upload-area" id="dropZone">
+                <input type="file" id="documentFile" class="hidden" accept=".pdf,.doc,.docx,.txt,.rtf">
+                <div class="upload-message">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <p>Drag & drop your document here or</p>
+                    <button id="browseButton" class="browse-btn">Browse Files</button>
+                    <div class="supported-formats">
+                        <span class="format-tag">PDF</span>
+                        <span class="format-tag">DOCX</span>
+                        <span class="format-tag">TXT</span>
+                        <span class="format-tag">RTF</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Translation Options -->
+        <div class="translation-options" style="display: none;">
+            <div class="language-selector">
+                <div class="source-lang">
+                    <label for="sourceLanguage">From:</label>
+                    <select id="sourceLanguage" class="language-select">
+                        <option value="auto">Auto-detect</option>
+                        {% for code, name in languages.items() %}
+                        <option value="{{ code }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button id="swapLanguages" class="swap-btn">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+
+                <div class="target-lang">
+                    <label for="targetLanguage">To:</label>
+                    <select id="targetLanguage" class="language-select">
+                        {% for code, name in languages.items() %}
+                        <option value="{{ code }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="translation-settings">
+                <div class="setting-option">
+                    <input type="checkbox" id="preserveFormatting" checked>
+                    <label for="preserveFormatting">Preserve document formatting</label>
+                </div>
+                <div class="setting-option">
+                    <input type="checkbox" id="translateComments">
+                    <label for="translateComments">Translate comments and annotations</label>
+                </div>
+            </div>
+
+            <button id="translateButton" class="translate-btn" disabled>
+                <i class="fas fa-language"></i>
+                Translate Document
+            </button>
+        </div>
+
+        <!-- Progress Section -->
+        <div id="progressSection" class="progress-section" style="display: none;">
+            <div class="progress-status">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <p class="progress-text">Processing document...</p>
+            </div>
+            <div class="translation-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Pages</span>
+                    <span class="stat-value" id="pageCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Words</span>
+                    <span class="stat-value" id="wordCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Time Left</span>
+                    <span class="stat-value" id="timeLeft">--:--</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modules/components/translator.css') }}">
 {% endblock %}
 
 {% block scripts %}

@@ -62,7 +62,14 @@
                     <li>AI-powered translation</li>
                     <li>Batch translation</li>
                 </ul>
-                <a href="{{ url_for('main.pricing') }}" class="premium-btn">Upgrade to Premium</a>
+                {% if current_user.is_authenticated and current_user.is_premium %}
+                    <a href="{{ url_for('main.translate_page') }}" class="try-now-btn">Try Now</a>
+                {% else %}
+                    <div class="feature-buttons">
+                        <a href="{{ url_for('main.pricing') }}" class="premium-btn">Upgrade to Premium</a>
+                        <a href="#" class="demo-btn" data-feature="translator">Watch Demo</a>
+                    </div>
+                {% endif %}
             </div>
             <div class="feature-image">
                 <img src="{{ url_for('static', filename='images/translator.svg') }}" alt="Document Translator">
