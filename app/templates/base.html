@@ -31,8 +31,13 @@
                 <div class="navbar-links">
                     <a href="{{ url_for('main.features') }}" class="nav-link">Features</a>
                     <a href="{{ url_for('main.pricing') }}" class="nav-link">Pricing</a>
-                    <a href="#" class="nav-link" id="signInButton">Sign In</a>
-                    <a href="{{ url_for('main.signup') }}" class="nav-link signup-btn">Sign Up</a>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('main.profile') }}" class="nav-link">Profile</a>
+                        <a href="{{ url_for('main.logout') }}" class="nav-link">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('main.signin') }}" class="nav-link" id="signInButton">Sign In</a>
+                        <a href="{{ url_for('main.signup') }}" class="nav-link signup-btn">Sign Up</a>
+                    {% endif %}
                     <div class="theme-toggle">
                         <input type="checkbox" id="darkModeToggle" class="dark-mode-input">
                         <label for="darkModeToggle" class="dark-mode-label">

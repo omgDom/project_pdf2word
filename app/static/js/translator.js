@@ -18,10 +18,10 @@ class Translator {
         this.filePreview = document.getElementById('filePreview');
         this.fileName = document.getElementById('fileName');
 
-        // Debug checks
-        if (!this.fileInput) console.error('File input not found');
-        if (!this.browseButton) console.error('Browse button not found');
-        if (!this.uploadArea) console.error('Upload area not found');
+        // Set supported formats for translation
+        if (this.fileInput) {
+            this.fileInput.accept = '.pdf,.docx,.txt,.rtf,.xlsx,.pptx,.epub,.html,.md,.odt,.jpeg';
+        }
     }
 
     bindEvents() {
@@ -96,8 +96,8 @@ class Translator {
         if (file) {
             console.log('File selected:', file.name);
             
-            // Check file type
-            const allowedTypes = ['.pdf', '.docx', '.txt'];
+            // Check file type for translation
+            const allowedTypes = ['.pdf', '.docx', '.txt', '.rtf', '.xlsx', '.pptx', '.epub', '.html', '.md', '.odt', '.jpeg'];
             const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
             
             if (allowedTypes.includes(fileExtension)) {
@@ -105,14 +105,8 @@ class Translator {
                 this.translateButton.disabled = false;
                 this.fileName.textContent = file.name;
                 this.filePreview.style.display = 'block';
-                
-                // Update upload area message
-                const uploadMessage = this.uploadArea.querySelector('.upload-message p');
-                if (uploadMessage) {
-                    uploadMessage.textContent = `Selected: ${file.name}`;
-                }
             } else {
-                alert('Please select a valid file type (PDF, DOCX, or TXT)');
+                alert('Please select a valid file type for translation');
                 this.fileInput.value = '';
                 this.translateButton.disabled = true;
             }

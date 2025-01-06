@@ -4,7 +4,7 @@ const APP_CONFIG = {
     ALLOWED_FORMATS: ['pdf', 'docx', 'txt', 'html', 'rtf', 'odt'],
     MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
     API_ENDPOINTS: {
-        CONVERT: '/convert',
+        CONVERT: '/api/convert',
         FETCH_CLOUD: '/fetch-cloud-file',
         DETECT_LANGUAGE: '/detect-pdf-language'
     }

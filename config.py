@@ -17,6 +17,9 @@ class Config:
     # Create upload folder if it doesn't exist
     @staticmethod
     def init_app(app):
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True) 
-
-    ALLOWED_EXTENSIONS = {'pdf'} 
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    
+    ALLOWED_EXTENSIONS = {
+        'pdf', 'docx', 'txt', 'rtf', 'xlsx', 
+        'pptx', 'epub', 'html', 'md', 'odt', 'jpeg'
+    } 

@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #4F46E5;
+    --primary-color: #4f46e5;
     --error-color: #EF4444;
     --success-color: #10B981;
     --background-color: #F9FAFB;
@@ -196,24 +196,63 @@ body {
 }
 
 .progress-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
 }
 
 .progress-bar {
     width: 100%;
-    height: 0.5rem;
+    height: 4px;
     background-color: var(--border-color);
-    border-radius: 0.25rem;
+    border-radius: 2px;
     overflow: hidden;
 }
 
 .progress-fill {
     height: 100%;
-    background-color: var(--primary-color);
     width: 0%;
-    transition: width 0.3s ease;
+    background: linear-gradient(-45deg, #4f46e5, #9333ea, #4f46e5, #9333ea);
+    background-size: 400% 400%;
+    animation: gradientMove 3s ease infinite;
+    position: relative;
+    transition: width 0.4s ease-in-out;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent
+    );
+    animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }
 
 .progress-percentage {
@@ -412,7 +451,7 @@ body {
 }
 
 .format-select {
-    width: 100%;
+    width: 600px;
     padding: 1rem;
     border: 1px solid var(--border-color);
     border-radius: 0.5rem;
@@ -2578,6 +2617,7 @@ input:checked + .slider:before {
     text-align: center;
     border-radius: 8px;
     border: 2px solid var(--primary-color);
+    background: transparent;
     color: var(--primary-color);
     text-decoration: none;
     font-weight: 500;
@@ -2686,4 +2726,49 @@ footer a:hover {
 
 .footer-social a:hover {
     color: #3b82f6;
+}
+
+/* Add responsive adjustment if needed */
+@media (max-width: 768px) {
+    .format-select {
+        width: 160px;  /* Increased from 120px to 160px */
+    }
+}
+
+/* Center Success Message */
+.success-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--bg-color);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.success-message i {
+    font-size: 3rem;
+    color: var(--success-color);
+    margin-bottom: 1rem;
+}
+
+.success-message p {
+    color: var(--text-color);
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }

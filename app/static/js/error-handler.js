@@ -10,8 +10,8 @@ class ErrorHandler {
 
     static ERROR_MESSAGES = {
         FILE_TOO_LARGE: 'File size exceeds the maximum limit of 10MB',
-        INVALID_TYPE: 'Invalid file type. Only PDF files are accepted',
-        CONVERSION_FAILED: 'Failed to convert the file',
+        INVALID_TYPE: 'Invalid file type. Supported formats: PDF, DOCX, TXT, RTF, XLSX, PPTX, EPUB, HTML, MD, ODT, JPEG',
+        CONVERSION_FAILED: 'File conversion failed. Please try a different format or contact support.',
         NETWORK_OFFLINE: 'Please check your internet connection',
         CLOUD_AUTH_FAILED: 'Failed to authenticate with cloud service',
         CLOUD_FETCH_FAILED: 'Failed to fetch file from cloud storage'

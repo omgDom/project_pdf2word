@@ -2,6 +2,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script src="{{ url_for('static', filename='js/leave-warning.js') }}"></script>
+
 <div class="container">
     <!-- Hero Section with Animated CTA -->
     <div class="hero-section">
@@ -40,9 +42,9 @@
     </div>
 
     <!-- Converter Section -->
-    <div class="converter-container">
+    <div id="converter" class="converter-container">
         <div class="upload-area" id="uploadArea">
-            <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+            <input type="file" id="fileInput" accept=".pdf,.docx,.txt,.rtf,.xlsx,.pptx,.epub,.html,.md,.odt,.jpeg" style="display: none;">
             <div class="upload-message">
                 <i class="fas fa-cloud-upload-alt"></i>
                 <p>Drag & drop your PDF here or</p>
@@ -60,19 +62,28 @@
             <p id="fileName"></p>
             <div class="format-selection">
                 <select id="outputFormat" class="format-select">
+                    <option value="pdf">PDF</option>
                     <option value="docx">DOCX</option>
                     <option value="txt">TXT</option>
+                    <option value="rtf">RTF</option>
+                    <option value="xlsx">XLSX</option>
+                    <option value="pptx">PPTX</option>
+                    <option value="epub">EPUB</option>
                     <option value="html">HTML</option>
+                    <option value="md">MD</option>
+                    <option value="odt">ODT</option>
+                    <option value="jpeg">JPEG</option>
                 </select>
                 <button id="convertButton" class="convert-btn" disabled>Convert</button>
             </div>
         </div>
 
-        <div id="progressContainer" class="progress-container" style="display: none;">
+        <!-- Progress Bar -->
+        <!-- Progress Bar -->
+        <div class="progress-container" style="display: none;">
             <div class="progress-bar">
-                <div class="progress-fill"></div>
+                <div class="progress-fill" id="conversionProgress"></div>
             </div>
-            <span class="progress-percentage">0%</span>
         </div>
     </div>
 
@@ -140,6 +151,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}

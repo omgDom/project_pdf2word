@@ -43,21 +43,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleFileSelect(e) {
         const file = e.target.files[0];
-        if (file) {
-            console.log('File selected:', file.name);
-            if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
-                // Show file preview
-                const filePreview = document.getElementById('filePreview');
-                const fileName = document.getElementById('fileName');
-                if (filePreview && fileName) {
-                    filePreview.style.display = 'block';
-                    fileName.textContent = file.name;
-                    document.getElementById('convertButton').disabled = false;
-                }
-            } else {
-                alert('Please select a PDF file');
-                fileInput.value = '';
+        if (!file) return;
+
+        const allowedTypes = ['.pdf', '.docx', '.txt', '.rtf', '.xlsx', '.pptx', '.epub', '.html', '.md', '.odt', '.jpeg'];
+        const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+        
+        if (allowedTypes.includes(fileExtension)) {
+            // Show file preview
+            const filePreview = document.getElementById('filePreview');
+            const fileName = document.getElementById('fileName');
+            if (filePreview && fileName) {
+                filePreview.style.display = 'block';
+                fileName.textContent = file.name;
+                document.getElementById('convertButton').disabled = false;
             }
+        } else {
+            alert('Please select a supported file type');
+            fileInput.value = '';
         }
     }
 }); 

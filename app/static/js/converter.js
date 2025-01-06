@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 class Converter {
     constructor() {
-        console.log('Converter constructor called');
         this.initializeElements();
         this.bindEvents();
     }
@@ -24,137 +23,143 @@ class Converter {
     initializeElements() {
         this.fileInput = document.getElementById('fileInput');
         this.convertButton = document.getElementById('convertButton');
-        this.formatSelect = document.getElementById('formatSelect');
-        this.progressContainer = document.getElementById('progressContainer');
-        this.progressFill = document.querySelector('.progress-fill');
-        this.progressText = document.querySelector('.progress-percentage');
-        
-        console.log('Elements initialized:', {
-            fileInput: this.fileInput,
-            convertButton: this.convertButton,
-            formatSelect: this.formatSelect
-        });
+        this.formatSelect = document.getElementById('outputFormat');
+        this.progressContainer = document.querySelector('.progress-container');
+        this.progressBar = document.getElementById('conversionProgress');
+        this.progressText = document.getElementById('progressPercent');
     }
 
     bindEvents() {
+        // Convert button click
         if (this.convertButton) {
-            console.log('Binding convert button click');
-            this.convertButton.addEventListener('click', (e) => {
-                console.log('Convert button clicked');
-                e.preventDefault();
+            this.convertButton.addEventListener('click', () => {
                 this.convert();
+            });
+        }
+
+        // File input change
+        if (this.fileInput) {
+            this.fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    // Enable convert button when file is selected
+                    if (this.convertButton) {
+                        this.convertButton.disabled = false;
+                    }
+                }
             });
         }
     }
 
-    convert() {
+    showProgress() {
+        if (this.progressContainer) {
+            this.progressContainer.style.display = 'block';
+        }
+    }
+
+    hideProgress() {
+        if (this.progressContainer) {
+            this.progressContainer.style.display = 'none';
+        }
+    }
+
+    updateProgress(percent) {
+        const progressBar = document.getElementById('conversionProgress');
+        if (progressBar) {
+            progressBar.style.width = `${percent}%`;
+        }
+    }
+
+    showAlert(message, type = 'success') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'success-message';
+        alertDiv.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <p>${message}</p>
+        `;
+        
+        document.body.appendChild(alertDiv);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            alertDiv.style.opacity = '0';
+            setTimeout(() => alertDiv.remove(), 300);
+        }, 3000);
+    }
+
+    async convert() {
         console.log('Convert method called');
         
-        if (!this.fileInput) {
-            console.error('File input missing');
-            return;
-        }
-
-        if (!this.fileInput.files.length) {
-            alert('Please select a file first');
+        if (!this.fileInput || !this.fileInput.files.length) {
+            this.showAlert('Please select a file first', 'error');
             return;
         }
 
         const file = this.fileInput.files[0];
-        const format = this.formatSelect ? this.formatSelect.value : 'docx';
+        const format = this.formatSelect ? this.formatSelect.value : 'pdf';
         
-        console.log('Converting:', {
-            fileName: file.name,
-            format: format
-        });
+        // Show progress bar
+        this.showProgress();
+        this.updateProgress(0);
 
-        // Show progress container
-        if (this.progressContainer) {
-            this.progressContainer.style.display = 'block';
-            this.progressFill.style.width = '0%';
-            this.progressText.textContent = '0%';
-        }
-
-        // Create FormData and append format
+        // Create FormData
         const formData = new FormData();
         formData.append('file', file);
         formData.append('format', format);
 
-        // Start progress simulation with smoother increments and pause
-        let progress = 0;
-        const progressInterval = setInterval(() => {
-            if (progress < 70) {
-                // Faster progress up to 70%
+        try {
+            // Simulate progress
+            let progress = 0;
+            const progressInterval = setInterval(() => {
                 progress += 5;
-            } else if (progress === 70) {
-                // Pause at 70% for 1.5 seconds
-                clearInterval(progressInterval);
-                setTimeout(() => {
-                    // Continue with slower progress
-                    const slowProgress = setInterval(() => {
-                        if (progress < 90) {
-                            progress += 2;
-                            if (this.progressFill && this.progressText) {
-                                this.progressFill.style.width = `${progress}%`;
-                                this.progressText.textContent = `${progress}%`;
-                            }
-                        } else {
-                            clearInterval(slowProgress);
-                        }
-                    }, 300);
-                }, 1500);
-            }
-            
-            if (this.progressFill && this.progressText) {
-                this.progressFill.style.width = `${progress}%`;
-                this.progressText.textContent = `${progress}%`;
-            }
-        }, 100);
-
-        // Make API call
-        fetch('/convert', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            clearInterval(progressInterval);
-            if (!response.ok) throw new Error('Conversion failed');
-            if (this.progressFill && this.progressText) {
-                // Smooth transition to 100%
-                this.progressFill.style.transition = 'width 0.5s ease-out';
-                this.progressFill.style.width = '100%';
-                this.progressText.textContent = '100%';
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            // Create download link
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `converted.${format}`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        })
-        .catch(error => {
-            console.error('Conversion error:', error);
-            alert('Error converting file');
-        })
-        .finally(() => {
-            // Hide progress container after a short delay
-            setTimeout(() => {
-                if (this.progressContainer) {
-                    this.progressContainer.style.display = 'none';
-                    if (this.progressFill) {
-                        this.progressFill.style.transition = 'none';
-                        this.progressFill.style.width = '0%';
-                    }
-                    if (this.progressText) this.progressText.textContent = '0%';
+                if (progress <= 90) {
+                    this.updateProgress(progress);
                 }
-            }, 1000);
-        });
+            }, 500);
+
+            const response = await fetch('/api/convert', {
+                method: 'POST',
+                body: formData
+            });
+
+            clearInterval(progressInterval);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('Conversion result:', result);
+
+            // Complete the progress bar
+            this.updateProgress(100);
+            
+            if (result.downloadUrl) {
+                // Delay success message until progress bar is complete
+                setTimeout(() => {
+                    // Show success message
+                    this.showAlert('Conversion successful! Downloading file...', 'success');
+                    
+                    // Start download after success message
+                    setTimeout(() => {
+                        window.location.href = result.downloadUrl;
+                        
+                        // Hide progress after download starts
+                        setTimeout(() => {
+                            this.hideProgress();
+                            this.updateProgress(0);
+                        }, 1000);
+                    }, 500);
+                }, 1000); // Added 1 second delay for progress bar completion
+            } else {
+                throw new Error('No download URL in response');
+            }
+
+        } catch (error) {
+            console.error('Conversion error:', error);
+            this.hideProgress();
+            this.showAlert(`Error converting file: ${error.message}`, 'error');
+        }
     }
 }
 
