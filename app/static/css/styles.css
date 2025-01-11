@@ -2772,3 +2772,13 @@ footer a:hover {
         transform: translate(-50%, -50%);
     }
 }
+
+.gmail-btn {
+    text-decoration: none;
+}
+
+/* Keep existing hover styles */
+.gmail-btn:hover {
+    background: #EA4335;
+    color: white;
+}

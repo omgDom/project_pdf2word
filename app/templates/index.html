@@ -79,7 +79,6 @@
         </div>
 
         <!-- Progress Bar -->
-        <!-- Progress Bar -->
         <div class="progress-container" style="display: none;">
             <div class="progress-bar">
                 <div class="progress-fill" id="conversionProgress"></div>
@@ -112,10 +111,10 @@
                 </div>
                 <h3>Gmail</h3>
                 <p>Access and edit PDF attachments from your inbox</p>
-                <button class="service-btn gmail-btn">
+                <a href="{{ url_for('gmail.connect_gmail') }}" class="service-btn gmail-btn">
                     Connect Gmail
                     <i class="fas fa-arrow-right"></i>
-                </button>
+                </a>
             </div>
             
             <div class="cloud-service-card dropbox">

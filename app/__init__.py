@@ -31,6 +31,10 @@ def create_app(config_class=Config):
     # Register blueprints
     app.register_blueprint(main)
     
+    # Register blueprints
+    from .routes.gmail import gmail
+    app.register_blueprint(gmail, url_prefix='/gmail')
+    
     # Add template context processor
     @app.context_processor
     def utility_processor():

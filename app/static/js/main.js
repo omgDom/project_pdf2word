@@ -48,4 +48,13 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => modal.remove(), 300);
         };
     }
+
+    // Gmail Integration
+    const gmailBtn = document.querySelector('.gmail-btn');
+    if (gmailBtn) {
+        gmailBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/gmail/integration';
+        });
+    }
 });

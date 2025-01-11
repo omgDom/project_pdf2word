@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="gmail-integration">
+    <div class="breadcrumb">
+        <a href="{{ url_for('main.index') }}">Home</a> / 
+        <span>Gmail Integration</span>
+    </div>
+
+    <div class="integration-hero">
+        <div class="hero-content">
+            <h1>SimpleDoc for Gmail</h1>
+            <p class="hero-description">
+                Create time-saving document workflows that run directly from Gmail messages. 
+                No need to download attachments or switch between apps.
+            </p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('gmail.connect_gmail') }}" class="btn btn-primary">Connect Gmail</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
