@@ -16,3 +16,6 @@ ENV/
 # OS
 .DS_Store
 Thumbs.db 
+
+# Sensitive credentials
+client_secrets.json 
