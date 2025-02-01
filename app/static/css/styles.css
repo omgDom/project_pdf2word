@@ -10,6 +10,17 @@
     --hover-color: #f5f5f5;
     --text-secondary: #6B7280;
     --accent-color: #4F46E5;
+    --card-bg: #ffffff;
+    --border-color: #e5e7eb;
+    --text-secondary: #6b7280;
+    --hover-color: #f3f4f6;
+    --button-secondary-bg: #f3f4f6;
+    --button-secondary-hover: #e5e7eb;
+    --button-disabled: #9ca3af;
+    --progress-bg: #e5e7eb;
+    --tag-bg: #f3f4f6;
+    --input-bg: #ffffff;
+    --accent-color: #3b82f6;
 }
 
 [data-theme="dark"] {
@@ -30,13 +41,19 @@ body {
     color: var(--text-color);
     line-height: 1.5;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     margin: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
     padding-top: 64px;
     overflow-x: hidden;
+    position: relative;
+}
+
+/* Add body-lock class */
+body.body-lock {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 
 .container {
@@ -44,6 +61,8 @@ body {
     max-width: 100vw;
     overflow-x: hidden;
     padding: 0 1rem;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .nav-menu {
@@ -63,7 +82,8 @@ body {
 }
 
 .nav-link:hover {
-    background-color: var(--hover-color);
+    background-color: none;
+    color: var(--primary-color);
 }
 
 .nav-link.active {
@@ -524,13 +544,12 @@ body {
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
-    transition: all 0.3s ease-in;
+    transition: background-color 0.2s ease;
 }
 
 .navbar .signup-btn:hover {
+    opacity: 0.92;
     color: white;
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(79, 70, 229, 0.5);
 }
 
 /* Dark theme adjustment */
@@ -1078,7 +1097,7 @@ body {
     }
 }
 
-/* Sign Up Page */
+/* Sign Up Page Styles */
 .signup-container {
     max-width: 480px;
     margin: 3rem auto;
@@ -1995,26 +2014,60 @@ html {
     margin-top: 3rem;
 }
 
+/* Container for pricing cards */
+.pricing-cards-container {
+    position: relative;
+    perspective: 1000px;
+    display: grid;
+    gap: 2rem;
+}
+
+/* Base card styles */
 .pricing-card {
+    position: relative;
+    background: var(--bg-primary);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(79, 70, 229, 0.1);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    padding: 2rem;
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    position: relative;
-    transition: transform 0.3s ease, border-color 0.3s ease;
+    z-index: 1;
+    cursor: pointer;
 }
 
-.pricing-card:hover {
-    transform: translateY(-5px);
+/* Default Premium card glow */
+.pricing-card[data-plan="premium"] {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.15);
 }
 
+/* Remove default glow when another card is selected */
+.pricing-card[data-plan="premium"]:not(.selected) .pricing-cards-has-selection {
+    border-color: rgba(79, 70, 229, 0.1);
+    box-shadow: none;
+}
+
+/* Selected state for any card */
 .pricing-card.selected {
-    border: 2px solid #3b82f6;
-    transform: scale(1.05);
+    transform: translateY(-16px);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.15);
+    z-index: 10;
+}
+
+/* Non-selected cards when one is selected */
+.pricing-cards-has-selection .pricing-card:not(.selected) {
+    transform: scale(0.98);
+    opacity: 0.7;
+}
+
+/* Hover effect only when no card is selected */
+.pricing-card:hover:not(.selected):not(.pricing-cards-has-selection *) {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
 .popular-badge {
@@ -2645,11 +2698,11 @@ input:checked + .slider:before {
 
 .companies-container {
     display: flex;
-    align-items: center;
-    gap: 6rem;
+    gap: 4rem;
     animation: scroll 30s linear infinite;
-    /* Make sure all logos fit in view */
-    width: calc(150px * 6 + 210px + 6rem * 7); /* 14 logos (7 * 2 sets) with gaps */
+    padding: 0 2rem;
+    /* Add this line to duplicate content */
+    width: calc(200% + 4rem);
 }
 
 .companies-container:hover {
@@ -2781,4 +2834,296 @@ footer a:hover {
 .gmail-btn:hover {
     background: #EA4335;
     color: white;
+}
+
+/* Update the primary button hover state */
+.auth-buttons .primary-btn:hover {
+    background: #1F4CD1;  /* Darker shade of your primary blue */
+    color: white;
+    transform: none;
+}
+
+/* If there's a separate scale transform, remove it */
+.primary-btn:hover {
+    transform: none;  /* Remove scaling */
+}
+
+/* Pricing section styles */
+.pricing-section {
+    padding: 4rem 0;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* FAQ Section */
+.faq-section {
+    margin-top: 8rem;
+    padding: 0 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.faq-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 4rem;
+    color: var(--text-primary);
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    grid-auto-rows: minmax(min-content, auto);
+}
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.faq-item h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.faq-item p {
+    font-family: 'Mono', monospace;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Grid layout */
+.faq-item:nth-child(1) { grid-column: 1 / span 2; }
+.faq-item:nth-child(2) { grid-column: 3; }
+.faq-item:nth-child(3) { grid-column: 1; }
+.faq-item:nth-child(4) { grid-column: 2 / span 2; }
+.faq-item:nth-child(5) { grid-column: 1 / span 2; }
+.faq-item:nth-child(6) { grid-column: 3; }
+.faq-item:nth-child(7) { grid-column: 2 / span 2; }
+
+/* Contact button styles */
+.faq-buttons {
+    margin-top: 1.5rem;
+}
+
+.faq-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.faq-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .faq-item:nth-child(n) {
+        grid-column: 1;
+    }
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3rem;
+    border-radius: 16px;
+    margin: 4rem auto;
+    max-width: 1000px;
+    text-align: center;
+    position: relative;
+    z-index: 1;  /* Ensure it sits above footer */
+}
+
+/* Adjust footer spacing if needed */
+.footer {
+    margin-top: -2rem;  /* Pull footer up slightly to overlap */
+    position: relative;
+    z-index: 0;
+}
+
+.pre-footer-section {
+    background: var(--card-bg);
+    padding: 2rem;
+    margin-top: 6rem;
+    margin-bottom: 2rem;
+    width: 600px;  /* Fixed width for the grey background */
+    margin-left: auto;  /* Push to right side */
+    margin-right: 2rem;  /* Add some spacing from the right edge */
+}
+
+.newsletter-container {
+    /* Remove max-width since parent is now constrained */
+    margin: 0 auto;
+}
+
+.newsletter-form-wrapper {
+    width: 100%;  /* Take full width of parent */
+}
+
+.newsletter-container h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.newsletter-container p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 1rem;
+    color: var(--text-secondary);
+}
+
+.newsletter-input {
+    flex: 1;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    padding: 1rem 1rem 1rem 3rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.newsletter-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+.newsletter-button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.newsletter-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.newsletter-button i {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .newsletter-form-wrapper {
+        width: 100%;
+    }
+    
+    .newsletter-container {
+        justify-content: center;
+    }
+
+    .pre-footer-section {
+        width: auto;
+        margin: 2rem;
+    }
+
+    /* Add these new styles */
+    .newsletter-form {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .newsletter-button {
+        width: 100%;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .input-wrapper {
+        width: 100%;
+    }
+
+    .newsletter-input {
+        width: 100%;
+    }
+}
+
+/* Add these to your existing styles */
+.hidden {
+    display: none;
+}
+
+.upload-message {
+    display: flex;
+}
+
+.swap-btn {
+    height: 40px;
+}
+
+.progress-text {
+    text-align: center;
+    margin-top: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.progress-bar {
+    width: 100%;
+}
+
+/* Add mobile-specific styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+        margin-top: 1rem;
+    }
+    
+    /* Center all content on mobile */
+    .content-wrapper {
+        text-align: center;
+        padding: 1rem;
+    }
 }

@@ -1,0 +1,151 @@
+/* Privacy Notice Container */
+.privacy-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Header Styles */
+.privacy-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.privacy-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.last-updated {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Content Sections */
+.privacy-content {
+    line-height: 1.6;
+}
+
+.privacy-section {
+    margin-bottom: 3.5rem;
+}
+
+.privacy-section h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.privacy-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 1.5rem 0 1rem 0;
+}
+
+.privacy-section p {
+    margin-bottom: 1.25rem;
+    color: var(--text-secondary);
+}
+
+/* List Styles */
+.privacy-section ul {
+    list-style-type: none;
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.privacy-section ul li {
+    position: relative;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+.privacy-section ul li::before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: -1.5rem;
+    font-weight: bold;
+}
+
+.privacy-section ul li strong {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* Contact Information Box */
+.contact-info {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.contact-info p {
+    margin-bottom: 0.5rem;
+}
+
+/* Links */
+.privacy-section a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.privacy-section a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .privacy-container {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .privacy-header {
+        margin-bottom: 2rem;
+    }
+
+    .privacy-header h1 {
+        font-size: 2rem;
+    }
+
+    .privacy-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .privacy-section h3 {
+        font-size: 1.15rem;
+    }
+
+    .privacy-section ul {
+        padding-left: 1.25rem;
+    }
+
+    .privacy-section ul li::before {
+        left: -1.25rem;
+    }
+}
+
+/* Dark Mode Adjustments */
+[data-theme="dark"] .contact-info {
+    background: var(--dark-bg);
+    border-color: var(--border-color-dark);
+}
+
+[data-theme="dark"] .privacy-section ul li strong {
+    color: var(--text-color-dark);
+} 

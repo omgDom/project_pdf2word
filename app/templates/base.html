@@ -16,10 +16,16 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
     
+    {% block meta %}
+    <!-- Default meta tags -->
+    <title>{{ title|default('SimpleDoc') }}</title>
+    <meta name="description" content="{{ meta_description|default('SimpleDoc - Document Management Made Simple') }}">
+    {% endblock %}
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/account.css') }}">
 </head>
 <body>
     <div class="page-wrapper">
@@ -28,6 +34,7 @@
                 <div class="navbar-logo">
                     <a href="{{ url_for('main.index') }}">SimpleDoc</a>
                 </div>
+                
                 <div class="navbar-links">
                     <a href="{{ url_for('main.features') }}" class="nav-link">Features</a>
                     <a href="{{ url_for('main.pricing') }}" class="nav-link">Pricing</a>
@@ -51,6 +58,26 @@
 
         {% block content %}{% endblock %}
 
+        <!-- Before the footer -->
+        <div class="pre-footer-section">
+            <div class="newsletter-container">
+                <div class="newsletter-form-wrapper">
+                    <h2>KEEP UP TO DATE WITH SIMPLEDOC</h2>
+                    <p>with our hand-crafted newsletter</p>
+                    
+                    <div class="newsletter-form">
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" class="newsletter-input" placeholder="Enter your email">
+                        </div>
+                        <button class="newsletter-button">
+                            SUBSCRIBE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
@@ -58,9 +85,9 @@
                     <h3>SimpleDoc</h3>
                     <p>Transform your documents instantly with our powerful tools.</p>
                     <div class="social-links">
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://twitter.com/SimpleDoc" target="_blank" rel="noopener noreferrer" aria-label="X (formerly Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://linkedin.com/company/simpledoc" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/SimpleDoc" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
                 
@@ -102,10 +129,11 @@
         <div class="modal-content signin-modal">
             <button class="modal-close">&times;</button>
             <h2>Welcome Back</h2>
-            <form id="baseSignInForm" class="signin-form">
+            <form id="baseSignInForm" class="signin-form" method="POST" action="{{ url_for('main.signin') }}">
                 <div class="form-group">
                     <input type="email" 
                            id="baseSignInEmail" 
+                           name="email"
                            placeholder="Email" 
                            required 
                            autocomplete="email">
@@ -113,6 +141,7 @@
                 <div class="form-group">
                     <input type="password" 
                            id="baseSignInPassword" 
+                           name="password"
                            placeholder="Password" 
                            required 
                            autocomplete="current-password">
@@ -157,5 +186,8 @@
     <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
     <script src="{{ url_for('static', filename='js/signin.js') }}"></script>
     <script src="{{ url_for('static', filename='js/pricing.js') }}"></script>
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/text-decrypt.js') }}"></script>
+    {% endblock %}
 </body>
 </html>     

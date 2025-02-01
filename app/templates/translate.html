@@ -4,8 +4,10 @@
 {% block content %}
 <div class="container translator-page">
     <div class="section-header">
-        <h1 class="translator-title">Document Translator</h1>
-        <p class="translator-subtitle">Translate your documents while preserving their original formatting</p>
+        <h1 class="translator-title" data-text="Document Translator">Document Translator</h1>
+        <p class="translator-subtitle" data-text="Transform your documents across languages while preserving their original formatting">
+            Transform your documents across languages while preserving their original formatting
+        </p>
     </div>
 
     <div class="translator-container">
@@ -22,84 +24,46 @@
                         <span class="format-tag">DOCX</span>
                         <span class="format-tag">TXT</span>
                         <span class="format-tag">RTF</span>
-                        <span class="format-tag">XLSX</span>
-                        <span class="format-tag">PPTX</span>
-                        <span class="format-tag">EPUB</span>
-                        <span class="format-tag">HTML</span>
-                        <span class="format-tag">MD</span>
-                        <span class="format-tag">ODT</span>
-                        <span class="format-tag">JPEG</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Translation Options -->
-        <div class="translation-options" style="display: none;">
-            <div class="language-selector">
-                <div class="source-lang">
-                    <label for="sourceLanguage">From:</label>
-                    <select id="sourceLanguage" class="language-select">
-                        <option value="auto">Auto-detect</option>
-                        {% for code, name in languages.items() %}
-                        <option value="{{ code }}">{{ name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
+        <!-- Language Selection -->
+        <div class="language-section">
+            <div class="language-pair">
+                <select id="sourceLanguage" class="language-select">
+                    <option value="auto">Detect Language</option>
+                    {% for code, name in languages.items() %}
+                    <option value="{{ code }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+                
                 <button id="swapLanguages" class="swap-btn">
                     <i class="fas fa-exchange-alt"></i>
                 </button>
-
-                <div class="target-lang">
-                    <label for="targetLanguage">To:</label>
-                    <select id="targetLanguage" class="language-select">
-                        {% for code, name in languages.items() %}
-                        <option value="{{ code }}">{{ name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                
+                <select id="targetLanguage" class="language-select">
+                    {% for code, name in languages.items() %}
+                    <option value="{{ code }}" {% if code == 'en' %}selected{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
             </div>
-
-            <div class="translation-settings">
-                <div class="setting-option">
-                    <input type="checkbox" id="preserveFormatting" checked>
-                    <label for="preserveFormatting">Preserve document formatting</label>
-                </div>
-                <div class="setting-option">
-                    <input type="checkbox" id="translateComments">
-                    <label for="translateComments">Translate comments and annotations</label>
-                </div>
-            </div>
-
+        </div>
+        
+        <!-- Translation Button -->
+        <div class="action-section">
             <button id="translateButton" class="translate-btn" disabled>
-                <i class="fas fa-language"></i>
                 Translate Document
             </button>
         </div>
-
+        
         <!-- Progress Section -->
         <div id="progressSection" class="progress-section" style="display: none;">
-            <div class="progress-status">
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                <p class="progress-text">Processing document...</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
             </div>
-            <div class="translation-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Pages</span>
-                    <span class="stat-value" id="pageCount">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Words</span>
-                    <span class="stat-value" id="wordCount">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Time Left</span>
-                    <span class="stat-value" id="timeLeft">--:--</span>
-                </div>
-            </div>
+            <p class="progress-text">0%</p>
         </div>
     </div>
 </div>
@@ -113,4 +77,5 @@
 {% block scripts %}
 {{ super() }}
 <script src="{{ url_for('static', filename='js/translator.js') }}"></script>
+<script src="{{ url_for('static', filename='js/text-decrypt.js') }}"></script>
 {% endblock %} 

@@ -4,19 +4,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveBadge = document.querySelector('.save-badge');
     const yearlyText = document.getElementById('yearlyText');
     const saveArrow = document.querySelector('.save-arrow');
+    const pricingContainer = document.querySelector('.pricing-grid');
 
     // Add click handlers for cards
     pricingCards.forEach(card => {
-        card.addEventListener('click', function(e) {
-            // Don't trigger if clicking the button
-            if (e.target.classList.contains('card-button')) {
-                return;
-            }
-            
+        card.addEventListener('click', function() {
             // Remove selected class from all cards
             pricingCards.forEach(c => c.classList.remove('selected'));
+            
             // Add selected class to clicked card
             this.classList.add('selected');
+            
+            // Add class to container to indicate a selection has been made
+            pricingContainer.classList.add('pricing-cards-has-selection');
         });
 
         // Get the button in this card

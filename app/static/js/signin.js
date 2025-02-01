@@ -53,12 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle form submission if form exists
     if (signInForm) {
         signInForm.addEventListener('submit', (e) => {
-            e.preventDefault();
             const email = document.getElementById('baseSignInEmail')?.value || '';
             const password = document.getElementById('baseSignInPassword')?.value || '';
-            const rememberMe = document.getElementById('baseRememberMe')?.checked || false;
-
-            console.log('Sign in attempt:', { email, password, rememberMe });
+            console.log('Sign in attempt:', { email });
         });
     }
 }); 

@@ -1,24 +1,24 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
-from config import Config
-from .routes.routes import main
+from config import config  # Changed to import config dictionary
 from datetime import datetime
 import os
-from .models import User  # Import the User model
 
-# Initialize Flask-Login
+db = SQLAlchemy()
 login_manager = LoginManager()
 
 @login_manager.user_loader
 def load_user(user_id):
-    # This is a simple implementation - replace with database lookup in production
-    return User(user_id)
+    from app.models.user import User
+    return User.query.get(int(user_id))
 
-def create_app(config_class=Config):
+def create_app(config_name='default'):
     app = Flask(__name__)
-    app.config.from_object(config_class)
+    app.config.from_object(config[config_name])  # Use config dictionary
     
-    # Initialize Flask-Login
+    # Initialize extensions
+    db.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = 'main.signin'
     
@@ -26,14 +26,22 @@ def create_app(config_class=Config):
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
     # Initialize the app
-    config_class.init_app(app)
+    config[config_name].init_app(app)
     
     # Register blueprints
-    app.register_blueprint(main)
+    from .routes.main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
     
-    # Register blueprints
-    from .routes.gmail import gmail
-    app.register_blueprint(gmail, url_prefix='/gmail')
+    # Register other blueprints if needed
+    from .routes.api import api as api_blueprint
+    app.register_blueprint(api_blueprint)
+    
+    from .routes.gmail import gmail as gmail_blueprint
+    app.register_blueprint(gmail_blueprint)
+    
+    # Register additional blueprints
+    from .routes.account import account
+    app.register_blueprint(account)
     
     # Add template context processor
     @app.context_processor

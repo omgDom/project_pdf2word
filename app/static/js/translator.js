@@ -1,20 +1,17 @@
 class Translator {
     constructor() {
-        console.log('Initializing Translator...');
-        this.initializeElements();
-        this.bindEvents();
-    }
-
-    initializeElements() {
-        // Get all required elements
-        this.fileInput = document.getElementById('fileInput');
+        console.log('Translator class initializing...');
+        // Initialize elements
         this.uploadArea = document.getElementById('uploadArea');
+        this.fileInput = document.getElementById('fileInput');
         this.browseButton = document.getElementById('browseButton');
         this.translateButton = document.getElementById('translateButton');
+        this.progressSection = document.getElementById('progressSection');
+        this.progressFill = document.querySelector('.progress-fill');
+        this.progressText = document.querySelector('.progress-text');
         this.sourceLanguage = document.getElementById('sourceLanguage');
         this.targetLanguage = document.getElementById('targetLanguage');
         this.swapButton = document.getElementById('swapLanguages');
-        this.progressContainer = document.getElementById('progressContainer');
         this.filePreview = document.getElementById('filePreview');
         this.fileName = document.getElementById('fileName');
 
@@ -22,28 +19,38 @@ class Translator {
         if (this.fileInput) {
             this.fileInput.accept = '.pdf,.docx,.txt,.rtf,.xlsx,.pptx,.epub,.html,.md,.odt,.jpeg';
         }
+
+        // Bind event listeners
+        this.setupEventListeners();
+
+        // Add after getting elements
+        console.log('Elements found:', {
+            uploadArea: this.uploadArea,
+            fileInput: this.fileInput,
+            browseButton: this.browseButton
+        });
     }
 
-    bindEvents() {
-        // Browse button click
+    setupEventListeners() {
         if (this.browseButton) {
             this.browseButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Browse button clicked');
-                this.fileInput.click();
+                if (this.fileInput) {
+                    this.fileInput.click();
+                }
             });
         }
 
-        // File input change
         if (this.fileInput) {
             this.fileInput.addEventListener('change', (e) => {
-                console.log('File input changed');
-                this.handleFileSelect(e);
+                const file = e.target.files[0];
+                if (file) {
+                    this.handleFile(file);
+                }
             });
         }
 
-        // Upload area drag and drop
         if (this.uploadArea) {
             this.uploadArea.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -61,56 +68,47 @@ class Translator {
                 e.preventDefault();
                 e.stopPropagation();
                 this.uploadArea.classList.remove('dragover');
-                const files = e.dataTransfer.files;
-                if (files.length) {
-                    this.fileInput.files = files;
-                    this.handleFileSelect({ target: { files } });
-                }
-            });
-
-            // Make the entire upload area clickable
-            this.uploadArea.addEventListener('click', (e) => {
-                if (e.target !== this.browseButton) {
-                    this.fileInput.click();
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    this.handleFile(file);
                 }
             });
         }
 
-        // Translate button
-        if (this.translateButton) {
-            this.translateButton.addEventListener('click', () => {
-                this.translateDocument();
-            });
-        }
-
-        // Swap languages button
         if (this.swapButton) {
-            this.swapButton.addEventListener('click', () => {
-                this.swapLanguages();
-            });
+            this.swapButton.addEventListener('click', () => this.swapLanguages());
+        }
+
+        if (this.translateButton) {
+            this.translateButton.addEventListener('click', () => this.translateDocument());
         }
     }
 
-    handleFileSelect(event) {
-        const file = event.target.files[0];
-        if (file) {
-            console.log('File selected:', file.name);
-            
-            // Check file type for translation
-            const allowedTypes = ['.pdf', '.docx', '.txt', '.rtf', '.xlsx', '.pptx', '.epub', '.html', '.md', '.odt', '.jpeg'];
-            const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
-            
-            if (allowedTypes.includes(fileExtension)) {
-                // Update UI
-                this.translateButton.disabled = false;
-                this.fileName.textContent = file.name;
-                this.filePreview.style.display = 'block';
-            } else {
-                alert('Please select a valid file type for translation');
-                this.fileInput.value = '';
-                this.translateButton.disabled = true;
-            }
+    handleFile(file) {
+        // Update UI to show selected file
+        const fileName = file.name;
+        const fileSize = (file.size / (1024 * 1024)).toFixed(2); // Convert to MB
+        
+        // Create or update file info display
+        let fileInfo = this.uploadArea.querySelector('.file-info');
+        if (!fileInfo) {
+            fileInfo = document.createElement('div');
+            fileInfo.className = 'file-info';
+            this.uploadArea.appendChild(fileInfo);
         }
+        
+        fileInfo.innerHTML = `
+            <p>Selected file: ${fileName}</p>
+            <p>Size: ${fileSize} MB</p>
+        `;
+
+        // Enable translate button
+        if (this.translateButton) {
+            this.translateButton.disabled = false;
+        }
+
+        // Store the file for later use
+        this.currentFile = file;
     }
 
     swapLanguages() {
@@ -122,30 +120,27 @@ class Translator {
     }
 
     async translateDocument() {
-        if (!this.fileInput.files.length) {
+        if (!this.currentFile) {
             alert('Please select a file first');
             return;
         }
 
         try {
             this.translateButton.disabled = true;
-            this.progressContainer.style.display = 'block';
+            this.progressSection.style.display = 'block';
             
             const formData = new FormData();
-            formData.append('file', this.fileInput.files[0]);
+            formData.append('file', this.currentFile);
             formData.append('source_lang', this.sourceLanguage.value);
             formData.append('target_lang', this.targetLanguage.value);
 
             // Update progress bar
             let progress = 0;
-            const progressFill = this.progressContainer.querySelector('.progress-fill');
-            const progressText = this.progressContainer.querySelector('.progress-percentage');
-            
             const progressInterval = setInterval(() => {
                 if (progress < 90) {
                     progress += 10;
-                    progressFill.style.width = `${progress}%`;
-                    progressText.textContent = `${progress}%`;
+                    this.progressFill.style.width = `${progress}%`;
+                    this.progressText.textContent = `${progress}%`;
                 }
             }, 500);
 
@@ -161,24 +156,22 @@ class Translator {
                 throw new Error(errorText || 'Translation failed');
             }
 
-            progressFill.style.width = '100%';
-            progressText.textContent = '100%';
+            this.progressFill.style.width = '100%';
+            this.progressText.textContent = 'Translation complete!';
 
             const blob = await response.blob();
-            this.downloadFile(blob, this.fileInput.files[0].name);
+            this.downloadFile(blob, this.currentFile.name);
 
         } catch (error) {
             console.error('Translation error:', error);
             alert(`Translation error: ${error.message}`);
         } finally {
             this.translateButton.disabled = false;
-            this.progressContainer.style.display = 'none';
+            this.progressSection.style.display = 'none';
             
             // Reset progress
-            const progressFill = this.progressContainer.querySelector('.progress-fill');
-            const progressText = this.progressContainer.querySelector('.progress-percentage');
-            if (progressFill) progressFill.style.width = '0%';
-            if (progressText) progressText.textContent = '0%';
+            this.progressFill.style.width = '0%';
+            this.progressText.textContent = '0%';
         }
     }
 
@@ -194,8 +187,7 @@ class Translator {
     }
 }
 
-// Initialize when DOM loads
+// Initialize when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, initializing Translator...');
-    window.translator = new Translator();
+    const translator = new Translator();
 }); 

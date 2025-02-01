@@ -1,4 +1,6 @@
 @import 'styles.css';
+@import 'modules/components/menu.css';
+@import 'modules/components/privacy.css';
 
 /* Reset default styles */
 * {

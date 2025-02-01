@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="account-container">
+    <!-- Profile Section -->
+    <div class="account-section">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                {% if current_user.avatar %}
+                    <img src="{{ current_user.avatar }}" alt="Profile picture">
+                {% else %}
+                    <div class="avatar-placeholder">{{ current_user.name[0] }}</div>
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <h1>{{ current_user.name }}</h1>
+                <p>{{ current_user.email }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Navigation -->
+    <div class="account-nav">
+        <button class="nav-item active" data-tab="general">General</button>
+        <button class="nav-item" data-tab="security">Security</button>
+        <button class="nav-item" data-tab="billing">Billing</button>
+        <button class="nav-item" data-tab="api">API Keys</button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+        <!-- General Settings -->
+        <div class="tab-pane active" id="general">
+            <form class="settings-form" id="profile-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" value="{{ current_user.name }}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ current_user.email }}">
+                </div>
+                <div class="form-group">
+                    <label for="timezone">Timezone</label>
+                    <select id="timezone" name="timezone">
+                        <option value="UTC">UTC</option>
+                        <!-- Add more timezone options -->
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Save Changes</button>
+            </form>
+        </div>
+
+        <!-- Security Settings -->
+        <div class="tab-pane" id="security">
+            <form class="settings-form" id="security-form">
+                <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <input type="password" id="current-password" name="current_password">
+                </div>
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" name="new_password">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm New Password</label>
+                    <input type="password" id="confirm-password" name="confirm_password">
+                </div>
+                <button type="submit" class="btn-primary">Update Password</button>
+            </form>
+        </div>
+
+        <!-- Billing Settings -->
+        <div class="tab-pane" id="billing">
+            <div class="current-plan">
+                <h3>Current Plan</h3>
+                <div class="plan-details">
+                    <p class="plan-name">{{ current_user.plan or 'Free' }}</p>
+                    <button class="btn-secondary">Upgrade Plan</button>
+                </div>
+            </div>
+            <div class="billing-history">
+                <h3>Billing History</h3>
+                <table class="billing-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Invoice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Add billing history rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- API Keys -->
+        <div class="tab-pane" id="api">
+            <div class="api-keys">
+                <div class="api-header">
+                    <h3>API Keys</h3>
+                    <button class="btn-secondary" id="generate-key">Generate New Key</button>
+                </div>
+                <div class="api-key-list">
+                    <!-- API keys will be listed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

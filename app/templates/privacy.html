@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block meta %}
+    <!-- Primary Meta Tags -->
+    <title>Privacy Notice | SimpleDoc</title>
+    <meta name="title" content="Privacy Notice | SimpleDoc">
+    <meta name="description" content="Learn about SimpleDoc's privacy practices, data collection, and your rights regarding your personal information.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="Privacy Notice | SimpleDoc">
+    <meta property="og:description" content="Learn about SimpleDoc's privacy practices, data collection, and your rights regarding your personal information.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="{{ request.url }}">
+    <meta property="twitter:title" content="Privacy Notice | SimpleDoc">
+    <meta property="twitter:description" content="Learn about SimpleDoc's privacy practices, data collection, and your rights regarding your personal information.">
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="privacy policy, data protection, privacy notice, SimpleDoc privacy, document privacy, data security">
+    <link rel="canonical" href="{{ request.url }}">
+{% endblock %}
+
+{% block content %}
+<div class="privacy-container">
+    <div class="privacy-header">
+        <h1>Privacy Notice</h1>
+        <p class="last-updated">Last updated: {{ last_updated }}</p>
+    </div>
+
+    <div class="privacy-content">
+        <section class="privacy-section">
+            <h2>About This Privacy Notice</h2>
+            <p>This Privacy Notice describes the information and collection practices on the websites, mobile applications, products, and services (collectively "Services") that link to this Privacy Notice. These Services are provided by SimpleDoc.</p>
+        </section>
+
+        <section class="privacy-section">
+            <h2>Notice of Collection</h2>
+            <h3>Collection of Personal Information</h3>
+            <p>The type of personal information we collect depends on your relationship with us and the Services you use:</p>
+            <ul>
+                <li><strong>Documents:</strong> We store and process the files you upload to your account. We use the files only as instructed by you.</li>
+                <li><strong>Contact Information:</strong> This includes your name, email address, mailing address, phone number, and electronic signature.</li>
+                <li><strong>Usage Information:</strong> We collect information about how you use our Services and the devices you use to access them.</li>
+                <li><strong>Commercial Information:</strong> This includes billing and payment information.</li>
+            </ul>
+        </section>
+
+        <section class="privacy-section">
+            <h2>Use of Personal Information</h2>
+            <p>We use information for the following purposes:</p>
+            <ul>
+                <li>To provide and improve our Services</li>
+                <li>To respond to your requests and communicate with you</li>
+                <li>To protect our company and users</li>
+                <li>To conduct marketing activities (with your consent)</li>
+            </ul>
+        </section>
+
+        <section class="privacy-section">
+            <h2>Your Privacy Rights</h2>
+            <p>You have the right to:</p>
+            <ul>
+                <li>Access your personal information</li>
+                <li>Request correction of your data</li>
+                <li>Request deletion of your data</li>
+                <li>Opt-out of marketing communications</li>
+            </ul>
+        </section>
+
+        <section class="privacy-section">
+            <h2>Security Measures</h2>
+            <p>We implement appropriate security measures to protect your data:</p>
+            <ul>
+                <li>Encryption of data in transit and at rest</li>
+                <li>Regular security assessments</li>
+                <li>Limited employee access to user data</li>
+            </ul>
+        </section>
+
+        <section class="privacy-section">
+            <h2>Contact Us</h2>
+            <p>For questions or concerns about our privacy practices, please contact us at:</p>
+            <div class="contact-info">
+                <p>Email: privacy@simpledoc.com</p>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %} 
