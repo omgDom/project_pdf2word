@@ -18,6 +18,7 @@ class Converter {
     constructor() {
         this.initializeElements();
         this.bindEvents();
+        this.conversionInProgress = false;
     }
 
     initializeElements() {
@@ -32,7 +33,9 @@ class Converter {
     bindEvents() {
         // Convert button click
         if (this.convertButton) {
-            this.convertButton.addEventListener('click', () => {
+            this.convertButton.addEventListener('click', (e) => {
+                // Add a data attribute to identify this as the convert button
+                this.convertButton.setAttribute('id', 'convertButton');
                 this.convert();
             });
         }
@@ -98,9 +101,17 @@ class Converter {
         const file = this.fileInput.files[0];
         const format = this.formatSelect ? this.formatSelect.value : 'pdf';
         
-        // Show progress bar
+        // First show visual feedback that the conversion is starting
         this.showProgress();
         this.updateProgress(0);
+
+        // Set local conversion tracking
+        this.conversionInProgress = true;
+        
+        // No need for delay - our new approach doesn't use beforeunload
+        if (typeof window.setConversionStatus === 'function') {
+            window.setConversionStatus(true);
+        }
 
         // Create FormData
         const formData = new FormData();
@@ -135,27 +146,37 @@ class Converter {
             this.updateProgress(100);
             
             if (result.downloadUrl) {
-                // Delay success message until progress bar is complete
+                // Mark conversion as complete BEFORE navigation
+                this.conversionInProgress = false;
+                
+                // Set global conversion status to false
+                if (typeof window.setConversionStatus === 'function') {
+                    window.setConversionStatus(false);
+                }
+                
+                // Start download immediately without showing success message
                 setTimeout(() => {
-                    // Show success message
-                    this.showAlert('Conversion successful! Downloading file...', 'success');
-                    
-                    // Start download after success message
-                    setTimeout(() => {
-                        window.location.href = result.downloadUrl;
-                        
-                        // Hide progress after download starts
-                        setTimeout(() => {
-                            this.hideProgress();
-                            this.updateProgress(0);
-                        }, 1000);
-                    }, 500);
-                }, 1000); // Added 1 second delay for progress bar completion
+                    window.location.href = result.downloadUrl;
+                }, 100);
+                
+                // Hide progress after download starts
+                setTimeout(() => {
+                    this.hideProgress();
+                    this.updateProgress(0);
+                }, 1000);
             } else {
                 throw new Error('No download URL in response');
             }
 
         } catch (error) {
+            // Mark conversion as failed
+            this.conversionInProgress = false;
+            
+            // Set global conversion status to false when error occurs
+            if (typeof window.setConversionStatus === 'function') {
+                window.setConversionStatus(false);
+            }
+            
             console.error('Conversion error:', error);
             this.hideProgress();
             this.showAlert(`Error converting file: ${error.message}`, 'error');

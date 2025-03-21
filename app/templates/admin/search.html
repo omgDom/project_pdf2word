@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Search Users</h1>
+        <nav class="admin-nav">
+            <a href="{{ url_for('admin.admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin.manage_users') }}">Users</a>
+            <a href="{{ url_for('admin.admin_stats') }}">Stats</a>
+        </nav>
+    </div>
+    
+    <div class="search-container">
+        <form method="GET" action="{{ url_for('admin.search_users') }}" class="search-form">
+            <input 
+                type="search" 
+                name="q" 
+                placeholder="Search by name or email..."
+                value="{{ query }}"
+                class="search-input"
+            >
+            <button type="submit" class="search-button">Search</button>
+        </form>
+        
+        {% if query %}
+        <div class="search-results">
+            <h2>Results for "{{ query }}"</h2>
+            {% if users %}
+            <div class="users-table-container">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                {% if user.email_verified %}
+                                <span class="badge success">Verified</span>
+                                {% else %}
+                                <span class="badge warning">Unverified</span>
+                                {% endif %}
+                            </td>
+                            <td class="actions">
+                                <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" class="btn-edit">Edit</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="no-results">No users found matching "{{ query }}"</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

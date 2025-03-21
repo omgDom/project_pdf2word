@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Verify your email</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #2c3e50;">Welcome to SimpleDoc!</h1>
+        
+        <p>Hi {{ user.name }},</p>
+        
+        <p>Thanks for signing up! Please verify your email address by clicking the button below:</p>
+        
+        <p style="text-align: center; margin: 30px 0;">
+            <a href="{{ verification_url }}" 
+               style="background-color: #3498db; 
+                      color: white; 
+                      padding: 12px 24px; 
+                      text-decoration: none; 
+                      border-radius: 4px; 
+                      display: inline-block;">
+                Verify Email Address
+            </a>
+        </p>
+        
+        <p>Or copy and paste this link into your browser:</p>
+        <p style="background: #f8f9fa; padding: 10px; word-break: break-all;">
+            {{ verification_url }}
+        </p>
+        
+        <p>This link will expire in 24 hours.</p>
+        
+        <p>If you didn't create an account, you can safely ignore this email.</p>
+        
+        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+        
+        <p style="color: #666; font-size: 12px;">
+            This is an automated message, please do not reply to this email.
+        </p>
+    </div>
+</body>
+</html> 

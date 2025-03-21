@@ -19,3 +19,6 @@ Thumbs.db
 
 # Sensitive credentials
 client_secrets.json 
+
+app/temp/*
+!app/temp/.gitkeep 

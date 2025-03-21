@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}API Documentation - SimpleDoc{% endblock %}
+
+{% block content %}
+<div class="api-docs-page">
+    <div class="integrations-hero">
+        <div class="container">
+            <h1>SimpleDoc API Documentation</h1>
+            <p>Everything you need to integrate SimpleDoc into your applications</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Getting Started -->
+        <section class="api-section">
+            <h2>Getting Started</h2>
+            <p>To use the SimpleDoc API, you'll need an API key. You can generate one in your <a href="{{ url_for('main.api_dashboard') }}">API Dashboard</a>.</p>
+            
+            <div class="code-block">
+                <pre><code># Authentication Example
+headers = {
+    'X-API-Key': 'your-api-key'
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Endpoints -->
+        <section class="api-section">
+            <h2>API Endpoints</h2>
+            
+            <!-- Convert Document -->
+            <h3>Convert Document</h3>
+            <p>Convert a single PDF document to the specified format.</p>
+            
+            <div class="code-block">
+                <pre><code>POST /api/v1/convert
+
+# Request Example
+import requests
+
+url = 'https://simpledoc.io/api/v1/convert'
+files = {'file': open('document.pdf', 'rb')}
+headers = {'X-API-Key': 'your-api-key'}
+
+response = requests.post(url, headers=headers, files=files)
+result = response.json()
+
+# Response Example
+{
+    "success": true,
+    "download_url": "https://simpledoc.io/api/v1/download/token/filename.docx",
+    "filename": "filename.docx",
+    "expires_in": 3600
+}</code></pre>
+            </div>
+
+            <!-- Batch Convert -->
+            <h3>Batch Convert</h3>
+            <p>Convert multiple PDF documents in a single request.</p>
+            
+            <div class="code-block">
+                <pre><code>POST /api/v1/batch/convert
+
+# Request Example
+files = [
+    ('files[]', open('doc1.pdf', 'rb')),
+    ('files[]', open('doc2.pdf', 'rb'))
+]
+
+response = requests.post(url, headers=headers, files=files)
+</code></pre>
+            </div>
+
+            <!-- API Status -->
+            <h3>Check API Status</h3>
+            <p>Get current API status and usage information.</p>
+            
+            <div class="code-block">
+                <pre><code>GET /api/v1/status
+
+# Response Example
+{
+    "status": "healthy",
+    "rate_limit": {
+        "limit": 1000,
+        "remaining": 985,
+        "reset": "2024-03-21T00:00:00Z"
+    },
+    "usage": {
+        "today": 15,
+        "total": 150
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Rate Limits -->
+        <section class="api-section">
+            <h2>Rate Limits</h2>
+            <p>The API has the following rate limits:</p>
+            <ul>
+                <li>Free tier: 100 requests per day</li>
+                <li>Pro tier: 1,000 requests per day</li>
+                <li>Enterprise tier: Custom limits available</li>
+            </ul>
+        </section>
+
+        <!-- Error Handling -->
+        <section class="api-section">
+            <h2>Error Handling</h2>
+            <p>The API uses standard HTTP response codes and returns errors in JSON format.</p>
+            
+            <div class="code-block">
+                <pre><code># Error Response Example
+{
+    "error": "Rate limit exceeded",
+    "status": 429
+}</code></pre>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modules/integrations.css') }}">
+{% endblock %} 

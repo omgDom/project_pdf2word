@@ -1,4 +1,3 @@
-
 /* Add to existing forms.css */
 @media screen and (max-width: 768px) {
     .upload-area {
@@ -33,4 +32,68 @@
 .upload-area {
     background-color: var(--bg-secondary);
     border: 2px dashed var(--border-color);
+} 
+
+/* Password Input Container */
+.password-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-container input {
+    flex: 1;
+    padding-right: 40px;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle-btn:hover {
+    color: var(--text-color);
+}
+
+.password-toggle-btn:focus {
+    outline: none;
+}
+
+.password-toggle-btn i {
+    font-size: 1.2rem;
+}
+
+/* Newsletter input styles */
+.newsletter-input {
+    flex: 1;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    padding: 1rem 1rem 1rem 3rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.newsletter-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+/* Light mode specific */
+html[data-theme='light'] .newsletter-input {
+    border-color: #e5e7eb;
+}
+
+html[data-theme='light'] .newsletter-input:focus {
+    border-color: #4f46e5;
 } 

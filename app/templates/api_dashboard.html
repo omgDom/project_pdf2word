@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}API Dashboard - SimpleDoc{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div id="alert-container"></div>
+    
+    <h1 class="mb-4">API Key Management</h1>
+    
+    <!-- Generate new API key -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Generate New API Key</h5>
+        </div>
+        <div class="card-body">
+            <form id="generate-key-form">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Key Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required
+                           placeholder="e.g., Production API Key">
+                </div>
+                <div class="mb-3">
+                    <label for="rate_limit" class="form-label">Rate Limit (requests per day)</label>
+                    <input type="number" class="form-control" id="rate_limit" name="rate_limit"
+                           value="1000" min="1" max="10000">
+                </div>
+                <button type="submit" class="btn btn-primary">Generate Key</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Existing API keys -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Your API Keys</h5>
+        </div>
+        <div class="card-body">
+            {% if api_keys %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Key</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Last Used</th>
+                                <th>Usage Today</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key in api_keys %}
+                            <tr>
+                                <td>{{ key.name }}</td>
+                                <td>
+                                    <code class="user-select-all">{{ key.key[:8] }}...{{ key.key[-8:] }}</code>
+                                    <button class="btn btn-sm btn-outline-secondary copy-key-btn"
+                                            data-key="{{ key.key }}">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <span class="badge {% if key.is_active %}bg-success{% else %}bg-danger{% endif %}">
+                                        {{ 'Active' if key.is_active else 'Inactive' }}
+                                    </span>
+                                </td>
+                                <td>{{ key.created_at.strftime('%Y-%m-%d') }}</td>
+                                <td>{{ key.last_used_at.strftime('%Y-%m-%d %H:%M') if key.last_used_at else 'Never' }}</td>
+                                <td>{{ key.requests_today }}/{{ key.rate_limit }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-warning toggle-key-btn"
+                                            data-key-id="{{ key.id }}"
+                                            data-active="{{ key.is_active|tojson }}">
+                                        {{ 'Deactivate' if key.is_active else 'Activate' }}
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger revoke-key-btn"
+                                            data-key-id="{{ key.id }}">
+                                        Revoke
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">You haven't generated any API keys yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/api-dashboard.js') }}"></script>
+{% endblock %} 

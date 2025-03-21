@@ -1,10 +1,15 @@
-from flask import Blueprint, redirect, url_for, session, request, render_template
+from flask import Blueprint, redirect, url_for, session, request, render_template, current_app
 from google_auth_oauthlib.flow import Flow
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
+from werkzeug.exceptions import BadRequest as BadRequestError
 import os
+from dotenv import load_dotenv
 
 gmail = Blueprint('gmail', __name__)
+
+# Load environment variables
+load_dotenv()
 
 # OAuth 2.0 configuration
 SCOPES = [
@@ -13,10 +18,24 @@ SCOPES = [
     'https://www.googleapis.com/auth/gmail.compose'
 ]
 
+def get_client_secrets_file():
+    """Get the client secrets file path from environment"""
+    secrets_file = os.getenv('GOOGLE_CLIENT_SECRETS_FILE')
+    if not secrets_file or not os.path.exists(secrets_file):
+        raise BadRequestError('Gmail integration not properly configured')
+    return secrets_file
+
+def get_redirect_uri():
+    """Get the appropriate redirect URI based on environment"""
+    if os.environ.get('FLASK_ENV') == 'development':
+        return 'http://127.0.0.1:5000/oauth2callback'
+    return os.getenv('GOOGLE_OAUTH_REDIRECT_URI', 'https://simpledoc.io/oauth2callback')
+
 @gmail.route('/integration')
 def integration():
     """Show Gmail integration page"""
-    return render_template('gmail/integration.html')
+    error = request.args.get('error')
+    return render_template('gmail/integration.html', error=error)
 
 @gmail.route('/connect-gmail')
 def connect_gmail():
@@ -24,9 +43,9 @@ def connect_gmail():
     try:
         # Create OAuth2 flow instance
         flow = Flow.from_client_secrets_file(
-            'client_secrets.json',
+            get_client_secrets_file(),
             scopes=SCOPES,
-            redirect_uri=url_for('gmail.oauth2callback', _external=True)
+            redirect_uri=get_redirect_uri()
         )
         
         # Generate authorization URL
@@ -41,78 +60,67 @@ def connect_gmail():
         return redirect(authorization_url)
         
     except Exception as e:
+        current_app.logger.error(f"Gmail connection error: {str(e)}")
         return redirect(url_for('gmail.integration', error="Gmail connection failed"))
 
 @gmail.route('/oauth2callback')
 def oauth2callback():
-    """Handle OAuth2 callback from Google"""
+    """Handle the OAuth 2.0 callback from Google"""
     try:
-        state = session['state']
-        
+        if 'state' not in session:
+            raise BadRequestError('Invalid state parameter')
+
+        # Get flow instance
         flow = Flow.from_client_secrets_file(
-            'client_secrets.json',
+            get_client_secrets_file(),
             scopes=SCOPES,
-            state=state,
-            redirect_uri=url_for('gmail.oauth2callback', _external=True)
+            state=session['state']
         )
         
-        # Complete OAuth2 flow
-        flow.fetch_token(authorization_response=request.url)
-        
-        # Store credentials
-        credentials = flow.credentials
+        # Use the authorization server's response to fetch the OAuth 2.0 tokens
+        flow.redirect_uri = get_redirect_uri()
+        authorization_response = request.url
+        flow.fetch_token(authorization_response=authorization_response)
         
         # Store credentials in session
+        credentials = flow.credentials
         session['gmail_credentials'] = credentials_to_dict(credentials)
-        
-        # Initialize Gmail API service
-        service = build('gmail', 'v1', credentials=credentials)
         
         return redirect(url_for('gmail.dashboard'))
         
     except Exception as e:
-        return redirect(url_for('gmail.integration', error="Gmail authentication failed"))
+        current_app.logger.error(f"Gmail OAuth callback error: {str(e)}")
+        return redirect(url_for('gmail.integration', error="Failed to complete authentication"))
 
 @gmail.route('/dashboard')
 def dashboard():
-    """Gmail integration dashboard"""
+    """Show Gmail integration dashboard"""
     if 'gmail_credentials' not in session:
-        return redirect(url_for('gmail.connect_gmail'))
-        
+        return redirect(url_for('gmail.integration'))
+    
     try:
         credentials = Credentials(**session['gmail_credentials'])
         service = build('gmail', 'v1', credentials=credentials)
         
-        # Get recent emails with attachments
-        results = service.users().messages().list(
-            userId='me',
-            q='has:attachment'
-        ).execute()
+        # Get user profile
+        profile = service.users().getProfile(userId='me').execute()
         
-        messages = results.get('messages', [])
-        recent_documents = []
+        # Get attachment settings from environment
+        attachment_settings = {
+            'allowed_types': os.getenv('GMAIL_ATTACHMENT_TYPES', 'pdf,doc,docx').split(','),
+            'max_size': int(os.getenv('GMAIL_MAX_ATTACHMENT_SIZE', 10485760))
+        }
         
-        for message in messages[:5]:  # Get details for 5 most recent
-            msg = service.users().messages().get(
-                userId='me',
-                id=message['id']
-            ).execute()
-            
-            # Extract attachment info
-            if 'payload' in msg and 'parts' in msg['payload']:
-                for part in msg['payload']['parts']:
-                    if part.get('filename'):
-                        recent_documents.append({
-                            'name': part['filename'],
-                            'message_id': message['id'],
-                            'attachment_id': part['body'].get('attachmentId')
-                        })
+        return render_template(
+            'gmail/dashboard.html',
+            profile=profile,
+            settings=attachment_settings
+        )
         
-        return render_template('gmail/dashboard.html', 
-                             documents=recent_documents)
-                             
     except Exception as e:
-        return redirect(url_for('gmail.integration', error="Failed to load dashboard"))
+        current_app.logger.error(f"Gmail dashboard error: {str(e)}")
+        session.pop('gmail_credentials', None)
+        return redirect(url_for('gmail.integration', error="Connection expired"))
 
 def credentials_to_dict(credentials):
     """Convert credentials to dictionary for session storage"""

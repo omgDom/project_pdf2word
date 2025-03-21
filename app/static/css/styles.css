@@ -796,31 +796,6 @@ body.body-lock {
     margin-bottom: 1rem;
 }
 
-.social-buttons {
-    display: flex;
-    gap: 1rem;
-}
-
-.social-buttons button {
-    flex: 1;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    background: var(--bg-color);
-    color: var(--text-color);
-    font-size: 0.875rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: background-color 0.2s ease;
-}
-
-.social-buttons button:hover {
-    background: var(--hover-color);
-}
-
 .signup-prompt {
     margin-top: 1.5rem;
     text-align: center;
@@ -2966,13 +2941,22 @@ footer a:hover {
 }
 
 .pre-footer-section {
-    background: var(--card-bg);
     padding: 2rem;
     margin-top: 6rem;
     margin-bottom: 2rem;
-    width: 600px;  /* Fixed width for the grey background */
-    margin-left: auto;  /* Push to right side */
-    margin-right: 2rem;  /* Add some spacing from the right edge */
+    width: 600px;
+    margin-left: auto;
+    margin-right: 2rem;
+}
+
+/* Light mode specific */
+html[data-theme='light'] .pre-footer-section {
+    background: #f3f4f6 !important;
+}
+
+/* Keep dark mode using variables */
+html[data-theme='dark'] .pre-footer-section {
+    background: var(--card-bg);
 }
 
 .newsletter-container {
@@ -3012,25 +2996,74 @@ footer a:hover {
 
 .input-wrapper i {
     position: absolute;
-    left: 1rem;
-    color: var(--text-secondary);
+    left: 1.25rem;  /* Fine-tuned to 1.25rem for perfect spacing */
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
 }
 
+/* Newsletter input styles */
 .newsletter-input {
     flex: 1;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
+    background: transparent;
+    border: none;
     padding: 1rem 1rem 1rem 3rem;
     border-radius: 8px;
     font-size: 1rem;
-    color: var(--text-primary);
     transition: all 0.3s ease;
+    color: inherit;
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+    .newsletter-input {
+        text-indent: 2.5rem;
+    }
 }
 
 .newsletter-input:focus {
-    border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+    box-shadow: none;
+}
+
+/* Light mode text and icon */
+html[data-theme='light'] .newsletter-input {
+    color: #1f2937;
+}
+
+html[data-theme='light'] .input-wrapper i {
+    color: #6b7280;
+}
+
+/* Dark mode text and icon */
+html[data-theme='dark'] .newsletter-input {
+    color: #333333;  /* Changed to softer black */
+}
+
+html[data-theme='dark'] .input-wrapper i {
+    color: #9ca3af;
+}
+
+/* Icon positioning */
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Placeholder colors */
+.newsletter-input::placeholder {
+    color: #6b7280;
+}
+
+html[data-theme='dark'] .newsletter-input::placeholder {
+    color: #9ca3af;
 }
 
 .newsletter-button {
@@ -3126,4 +3159,69 @@ footer a:hover {
         text-align: center;
         padding: 1rem;
     }
+}
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px);
+    padding: 2rem;
+}
+
+.auth-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-box h1 {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.auth-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.auth-form .btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.alert-error {
+    background: var(--error-bg, #fde8e8);
+    color: var(--error-color, #dc3545);
+    border: 1px solid var(--error-border, #fad7d7);
+}
+
+/* Light mode only - using [data-theme='light'] selector */
+html[data-theme='light'] .signup-form button[type="submit"] {
+    background-color: #4f46e5;
+}
+
+html[data-theme='light'] .signup-form button[type="submit"]:hover {
+    background-color: #3b82f6;
 }

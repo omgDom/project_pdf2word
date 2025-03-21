@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Edit User</h1>
+        <nav class="admin-nav">
+            <a href="{{ url_for('admin.admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin.manage_users') }}">Users</a>
+        </nav>
+    </div>
+    
+    <div class="edit-user-form">
+        <form method="POST">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" value="{{ user.name }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+            
+            <div class="form-group checkbox">
+                <label>
+                    <input type="checkbox" name="email_verified" {% if user.email_verified %}checked{% endif %}>
+                    Email Verified
+                </label>
+            </div>
+            
+            <div class="form-group checkbox">
+                <label>
+                    <input type="checkbox" name="is_admin" {% if user.is_admin %}checked{% endif %}>
+                    Admin Access
+                </label>
+            </div>
+            
+            <div class="form-actions">
+                <a href="{{ url_for('admin.manage_users') }}" class="btn-secondary">Cancel</a>
+                <button type="submit" class="btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

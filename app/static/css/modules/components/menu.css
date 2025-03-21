@@ -20,10 +20,29 @@
 }
 
 .navbar-logo a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--text-color);
     text-decoration: none;
+}
+
+.logo {
+    height: 55px;
+    width: auto;
+    transition: transform 0.2s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.brand-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color);
 }
 
 .navbar-links {
@@ -48,9 +67,20 @@
     padding: 0.5rem 1rem;
     border-radius: 8px;
     transition: background-color 0.3s ease;
+    text-decoration: none;
 }
 
-.signup-btn:hover {
+/* Light mode specific styles */
+html[data-theme="light"] .signup-btn {
+    background-color: #4f46e5;
+}
+
+html[data-theme="light"] .signup-btn:hover {
+    background-color: #2563eb;
+}
+
+/* Dark mode specific styles */
+html[data-theme="dark"] .signup-btn:hover {
     background: var(--primary-dark);
 }
 
@@ -106,14 +136,17 @@
 
     .nav-link {
         font-size: 1.1rem;
-        padding: 0.5rem 0;
     }
 
-    .theme-toggle {
-        position: static;
-        margin-top: 1rem;
-        padding: 0.5rem 0;
-        border-top: 1px solid var(--border-color);
+    .signup-form .btn-primary:hover {
+        background-color: #1d4ed8;
+    }
+
+    /* Footer */
+    .auth-footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--text-secondary);
     }
 
     .signup-btn {
@@ -175,5 +208,121 @@
 
 [data-theme="dark"] .navbar-links.active {
     background: #121212;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Add these styles for signin-trigger */
+.signin-trigger {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+    font-weight: 500;
+}
+
+.signin-trigger:hover {
+    color: var(--primary-color);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--bg-color);
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.modal-close:hover {
+    color: var(--text-color);
+}
+
+/* Social buttons base styles */
+.social-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    justify-content: center;
+    width: auto;
+    flex: 1;
+}
+
+/* Dark mode styles - using higher specificity */
+html:not([data-theme="light"]) .google-btn,
+html:not([data-theme="light"]) .github-btn {
+    background: #24292e !important;
+    color: white !important;
+    border: 1px solid #1b1f23;
+}
+
+html:not([data-theme="light"]) .google-btn:hover,
+html:not([data-theme="light"]) .github-btn:hover {
+    background: #2c3338 !important;
+    color: white !important;
+}
+
+/* Light mode styles */
+html[data-theme="light"] .google-btn,
+html[data-theme="light"] .github-btn {
+    background: white;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+html[data-theme="light"] .google-btn:hover,
+html[data-theme="light"] .github-btn:hover {
+    background: #f1f1f1;
+    color: #333;
+}
+
+/* Remove the disabled state styles */
+.social-btn[disabled] {
+    display: none;  /* Remove this if it exists */
 }

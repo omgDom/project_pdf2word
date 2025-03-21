@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome to the admin dashboard!</p>
+    
+    <nav class="admin-nav">
+        <a href="{{ url_for('admin.admin_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('admin.manage_users') }}">Users</a>
+    </nav>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Users</h3>
+            <p class="stat-number">{{ users|length }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

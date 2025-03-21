@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="error-container">
+    <h1>Dashboard Error</h1>
+    <div class="error-message">
+        <p>Sorry, there was an error generating the dashboard:</p>
+        <pre>{{ error_message }}</pre>
+    </div>
+    <div class="error-actions">
+        <a href="/analytics" class="btn btn-primary">Retry</a>
+        <a href="/" class="btn btn-secondary">Go Home</a>
+    </div>
+</div>
+
+<style>
+.error-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.error-message {
+    background: #fff3f3;
+    border: 1px solid #ffcdd2;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.error-message pre {
+    background: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.error-actions {
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+</style>
+{% endblock %} 

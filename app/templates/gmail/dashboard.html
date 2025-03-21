@@ -4,39 +4,25 @@
 {% block content %}
 <div class="gmail-dashboard">
     <div class="dashboard-header">
-        <h1>Gmail Integration</h1>
+        <h1>Gmail Integration Dashboard</h1>
         <div class="connection-status connected">
-            <span class="status-dot"></span>
-            Connected to Gmail
+            <i class="fas fa-check-circle"></i>
+            Connected as: {{ profile.emailAddress }}
         </div>
     </div>
 
     <div class="dashboard-content">
-        <!-- Recent Documents Section -->
-        <section class="recent-documents">
-            <h2>Recent Documents</h2>
-            <div class="document-list">
-                {% if documents %}
-                    {% for doc in documents %}
-                    <div class="document-item">
-                        <div class="doc-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <div class="doc-info">
-                            <h3>{{ doc.name }}</h3>
-                            <p>From Gmail attachment</p>
-                        </div>
-                        <div class="doc-actions">
-                            <button class="action-btn" onclick="editDocument('{{ doc.message_id }}', '{{ doc.attachment_id }}');">
-                                <i class="fas fa-edit"></i>
-                                Edit
-                            </button>
-                        </div>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <p class="no-documents">No recent documents found</p>
-                {% endif %}
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <h3>Storage Used</h3>
+                <p class="stat-number">{{ profile.messagesTotal }}</p>
+                <p class="stat-label">Messages</p>
+            </div>
+            <div class="stat-card">
+                <h3>Storage Used</h3>
+                <p class="stat-number">{{ (profile.storageUsed / 1024 / 1024) | round(2) }}</p>
+                <p class="stat-label">MB Used</p>
             </div>
         </section>
 
@@ -44,15 +30,15 @@
         <section class="quick-actions">
             <h2>Quick Actions</h2>
             <div class="action-buttons">
-                <a href="{{ url_for('gmail.connect_gmail') }}" class="action-btn edit">
+                <a href="{{ url_for('gmail.connect_gmail') }}" class="action-btn">
                     <i class="fas fa-sync"></i>
                     Refresh Connection
                 </a>
-                <a href="#" class="action-btn sign">
+                <a href="#settings" class="action-btn">
                     <i class="fas fa-cog"></i>
                     Settings
                 </a>
-                <a href="#" class="action-btn share">
+                <a href="#help" class="action-btn">
                     <i class="fas fa-question-circle"></i>
                     Help
                 </a>
@@ -60,10 +46,4 @@
         </section>
     </div>
 </div>
-
-<script>
-function editDocument(messageId, attachmentId) {
-    console.log('Editing document:', messageId, attachmentId);
-}
-</script>
 {% endblock %} 

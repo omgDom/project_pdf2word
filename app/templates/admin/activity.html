@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Activity Logs</h1>
+        <nav class="admin-nav">
+            <a href="{{ url_for('admin.admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin.manage_users') }}">Users</a>
+            <a href="{{ url_for('admin.admin_stats') }}">Stats</a>
+            <a href="{{ url_for('admin.activity_logs') }}" class="active">Activity</a>
+        </nav>
+    </div>
+    
+    <div class="activity-container">
+        <table class="activity-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Description</th>
+                    <th>IP Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs.items %}
+                <tr>
+                    <td>{{ log.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>
+                        {% if log.user %}
+                            {{ log.user.email }}
+                        {% else %}
+                            System
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge 
+                            {% if log.action == 'delete_user' %}error
+                            {% elif log.action == 'edit_user' %}warning
+                            {% else %}info{% endif %}
+                        ">
+                            {{ log.action }}
+                        </span>
+                    </td>
+                    <td>{{ log.description }}</td>
+                    <td>{{ log.ip_address }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% if logs.pages > 1 %}
+        <div class="pagination">
+            {% if logs.has_prev %}
+            <a href="{{ url_for('admin.activity_logs', page=logs.prev_num) }}" class="btn-page">&laquo; Previous</a>
+            {% endif %}
+            
+            <span class="page-info">
+                Page {{ logs.page }} of {{ logs.pages }}
+            </span>
+            
+            {% if logs.has_next %}
+            <a href="{{ url_for('admin.activity_logs', page=logs.next_num) }}" class="btn-page">Next &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 
