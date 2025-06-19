@@ -1,4 +1,4 @@
-# SimpleDocs
+# SimpleDoc
 
 Professional PDF to Word conversion service with advanced document analysis and processing capabilities.
 
